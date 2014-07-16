@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<?php
+	// include the configs / constants for the database connection
+	require_once("config/db.php");
 	function stdev(array $a) {
 		// algorithm used: http://office.microsoft.com/hu-hu/excel-help/szoras-fuggveny-HP010335660.aspx
 		$nSum = array_sum($a);
@@ -97,11 +99,8 @@
 				<div id="scrollingTable">
 					<table>
 						<?php
-						$username="1637366_bor";
-						$password="Borkostolas:1!";
-						$database="1637366_bor";
-						mysql_connect("pdb14.awardspace.net:3306",$username,$password);
-						@mysql_select_db($database) or die( "Unable to select database");
+						mysql_connect(DB_HOST,DB_USER,DB_PASS);
+						@mysql_select_db(DB_NAME) or die( "Unable to select database");
 						$setNamesQuery = "SET NAMES 'utf8'";
 						mysql_query($setNamesQuery);
 						$query="SELECT * FROM ertekelesek ORDER BY `borkostoloNevek` ASC ";
