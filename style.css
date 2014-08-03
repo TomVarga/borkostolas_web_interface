@@ -46,7 +46,7 @@ a {
 #logo {
 	float: left;
 	margin-left: 10px;
-	margin-top: 20px;
+	margin-top: 10px;
 	width: 250px;
 }
 
@@ -57,7 +57,7 @@ a {
 
 #logo h1 {
 	font-size:1.8em;
-	padding-top:10px;
+	padding-top:-10px;
 	color: #bb1f42;
 }
 
@@ -67,10 +67,9 @@ a {
 }
 
 #logo img {
-	margin-left: 240px;
-	margin-top: -50px;
-	width: 500px;
-	height: 75px;
+	margin-left: -40px;
+	width: 720px;
+	height: 90px;
 }
 
 /* Top Navigation */
@@ -170,6 +169,7 @@ a {
 
 /* Tables */
 
+
 #scrollingTable {
 	overflow: auto;
 }
@@ -177,11 +177,12 @@ a {
 table{
 	border: 0px solid black;
 	border-spacing: 0px;
+	white-space: nowrap;
 }
 
 table thead tr{
 	font-family: Arial, monospace;
-	font-size: 14px;
+	font-size: 12px;
 }
 
 table thead tr th{
@@ -195,7 +196,7 @@ table thead tr th{
 table tr {
 	font-family: arial, monospace;
 	color: black;
-	font-size:12px;
+	font-size:10px;
 	background-color: white;
 }
 
@@ -206,6 +207,28 @@ table tr:nth-child(even) {
 table tr td, th{
 	border-bottom: 1px solid black;
 	padding: 2px;
+}
+
+/* new table stlye */
+
+.topScrollingBlockWrapper { width: 50%; overflow-x: auto; overflow-y: hidden; height: 20px;}
+
+.tableContainer {
+	clear: both;
+	width: 100%;
+	display:inline-block;
+}
+
+.leftTableContainer {
+	width: 50%;
+	float:left;
+	overflow-x: auto;
+}
+
+.rightTableContainer {
+	width: 45%;
+	float: left;
+	margin-left: 5%;
 }
 
 /* side bar */
