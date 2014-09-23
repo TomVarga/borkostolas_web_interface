@@ -1,0 +1,442 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="hu">
+<head>
+	<link href="favicon.ico" rel="icon" type="image/x-icon" />
+	<title>Borkóstolás</title>
+	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
+	<!--Load the AJAX API-->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<?php
+	// include the configs / constants for the database connection
+	require_once("config/db.php");
+	function stdev(array $a) {
+		// algorithm used: http://office.microsoft.com/hu-hu/excel-help/szoras-fuggveny-HP010335660.aspx
+		$nSum = array_sum($a);
+		$nAvg = $nSum / count($a);
+		$nSumOfDeviationFromAvg = 0;
+		foreach($a as $key => $value){
+			$nSumOfDeviationFromAvg = $nSumOfDeviationFromAvg + pow(($nAvg - $value),2);
+		}
+		return sqrt($nSumOfDeviationFromAvg/(count($a)-1));
+	}
+	function korrelByTaster($sTaster, $tData, $tTasterAvgScore, $tItemAvg){
+		// algorithm used: http://office.microsoft.com/hu-hu/excel-help/korrel-fuggveny-HP010342332.aspx
+		// build avg table for taster from  $tItemAvg excluding items that taster didn't taste
+		$tTasterSpecificItemAvg = Array();
+		foreach ($tItemAvg as $sItem => $nItemAvg) {
+			if (empty($tData[$sTaster][$sItem]) == false){
+				$tTasterSpecificItemAvg[$sItem] = $nItemAvg;
+			}
+		}
+
+		$nTasterAvg = $tTasterAvgScore[$sTaster];
+		$nAvgAvg = array_sum($tTasterSpecificItemAvg) / count($tTasterSpecificItemAvg);
+		$nDivident = 0;
+		$nTasterPartSquared = 0;
+		$nAvgPartSquared = 0;
+		foreach($tData as $sTasterName => $tScores){
+			if ($sTasterName == $sTaster) {
+				foreach ($tScores as $sItem => $nScore) {
+					if (empty($nScore) == false) {
+						$nDivident = $nDivident + ($nScore-$nTasterAvg)*($tTasterSpecificItemAvg[$sItem]-$nAvgAvg);
+						$nTasterPartSquared = $nTasterPartSquared + pow($nScore-$nTasterAvg,2);
+						$nAvgPartSquared = $nAvgPartSquared + pow($tTasterSpecificItemAvg[$sItem]-$nAvgAvg,2);
+					}
+					
+				}
+			}
+		}
+		return $nDivident/sqrt($nTasterPartSquared*$nAvgPartSquared);
+	}
+	?>
+</head>
+
+
+<body>
+	<div id="wrapper">
+		<!--HEADER/LOGO-->
+		<div id="header">
+			<div id="logo">
+				<img src="header_image.jpg" alt="Fejléc kép" class="headerImage" />
+				<h1>Borkóstolás</h1>
+			</div>
+
+			<!--TAB NAVIGATION-->
+			<div id="topnav">
+				<a href="index.html">Főoldal</a>
+				<a href="borkostolas.html" class="active">Borkóstolás</a>
+				<a href="modszerek.html">Módszerek</a>
+				<a href="kapcsolat.html">Kapcsolat</a>
+			</div>
+		</div>
+		<div id="contentWrapper">
+			<!--SIDE BAR CONTENT-->
+			<div id="sidebar">
+				<div id="container2">
+					<div class="blocklinks">
+						<h3>Legfrisseb információk &rsaquo;</h3>
+						<a href="#" class="link">Az még nincs</a>
+						<a href="#" class="link">sajnos.</a>
+						<br />
+						<h3>Linkek &rsaquo;</h3>
+						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
+						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
+					</div>
+				</div>
+			</div>
+			<!--MAIN CONTENT-->
+			<div id="content">
+
+				<h2> Rövid leírás &rsaquo;</h2>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/>
+				</p>
+				<br />
+				<h2>Adatbázis &rsaquo;</h2>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+				<br />
+				<div id="scrollingTable">
+					<table>
+						<?php
+						mysql_connect(DB_HOST,DB_USER,DB_PASS);
+						@mysql_select_db(DB_NAME) or die( "Unable to select database");
+						$setNamesQuery = "SET NAMES 'utf8'";
+						mysql_query($setNamesQuery);
+						$query="SELECT * FROM ertekelesek ORDER BY `borkostoloNevek` ASC ";
+						$result=mysql_query($query);
+						$numR=mysql_numrows($result);
+						$numC=mysql_num_fields($result);
+
+						// $query2="SELECT * FROM teszt ORDER BY `nevek` ASC ";
+						// $result2=mysql_query($query2);
+						// $numR2=mysql_numrows($result2);
+						// $numC2=mysql_num_fields($result2);
+						// mysql_close();
+
+						for ($i=0; $i<$numR; $i++){
+							if($i==0){
+								echo "<thead>";
+							}
+							echo "
+							<tr>";
+								$field=mysql_result($result,$i,"borkostoloNevek");
+								echo "<th>$field</th>";
+								for ($j=1; $j<$numC; $j++){
+									$field=mysql_result($result,$i,$j);
+									if($i==0){
+										echo "<th>$field</th>";
+									}else{
+										echo "<td>$field</td>";
+									}
+								};
+								echo "
+							</tr>
+							";
+							if($i==0){
+								echo "</thead>";
+							}
+						};
+						
+						$tData = Array();
+						for ($i=0; $i<$numR; $i++){
+							$tData[mysql_result($result,$i,0)] = Array();
+							for ($j=1; $j<$numC; $j++){
+								$tData[mysql_result($result,$i,0)][mysql_result($result,0,$j)] = mysql_result($result,$i,$j);
+							}
+						}
+
+						$tSumByTaster = Array();
+						foreach($tData as $sTaster => $tScores){
+							$tSumByTaster[$sTaster] = array_sum($tScores);
+						}
+
+						$tItemScores = Array();
+						foreach($tData as $sTaster => $tScores){
+							if (empty($sTaster) == false){
+								foreach($tScores as $sItem => $sScore){
+									if (empty($tItemScores[$sItem])){
+										$tItemScores[$sItem] = Array();
+									}
+									if (empty($sScore) == false){
+										array_push($tItemScores[$sItem], $sScore);
+									}
+								}
+							}
+						}
+
+						$tItemAvg = Array();
+						foreach($tItemScores as $sItem => $tScores){
+							if (empty($sItem) == false){
+								$tItemAvg[$sItem] = array_sum($tScores)/count($tScores);
+							}
+						}
+
+						$tTasterAvgScore = Array();
+						foreach($tData as $sTaster => $tScores){
+							if (empty($sTaster) == false){
+								$nScoredItems = 0;
+								if (empty($tTasterAvgScore[$sTaster])){
+									$tTasterAvgScore[$sTaster] = 0;
+								}
+								foreach($tScores as $sItem => $sScore){
+									if (empty($sScore) == false) {
+										$nScoredItems++;
+										$tTasterAvgScore[$sTaster] = $tTasterAvgScore[$sTaster] + $sScore;
+									}
+								}
+								$tTasterAvgScore[$sTaster] = $tTasterAvgScore[$sTaster] / $nScoredItems;
+							}
+						}
+
+						$tItemDeviation = Array();
+						foreach($tItemScores as $sItem => $tScores){
+							if (empty($sItem) == false){
+								$tItemDeviation[$sItem] = stdev($tScores);
+							}
+						}
+
+						$tWRight = Array();
+						foreach ($tData as $sTaster => $tScores) {
+							if (empty($sTaster) == false){
+								if (empty($tWRight[$sTaster])){
+									$tWRight[$sTaster] = Array();
+								}
+								foreach ($tScores as $sItem => $nScore) {
+									if (empty($nScore) ){
+										$tWRight[$sTaster][$sItem] = 0;
+									}else{
+										$tWRight[$sTaster][$sItem] = $nScore/$tSumByTaster[$sTaster];
+									}
+								}
+							}
+						}
+
+						$tDiffFromAvg = Array();
+						foreach ($tData as $sTaster => $tScores) {
+							if (empty($sTaster) == false){
+								if (empty($tDiffFromAvg[$sTaster])){
+									$tDiffFromAvg[$sTaster] = Array();
+								}
+								foreach ($tScores as $sItem => $nScore) {
+									if (empty($nScore) ){
+										$tDiffFromAvg[$sTaster][$sItem] = 0;
+									}else{
+										$tDiffFromAvg[$sTaster][$sItem] = abs($tItemAvg[$sItem]-$nScore);
+									}
+								}
+							}
+						}
+
+						$tDiffFromAvgByItem = Array();
+						foreach($tDiffFromAvg as $sTaster => $tScores){
+							if (empty($sTaster) == false){
+								foreach($tScores as $sItem => $sScore){
+									if (empty($tDiffFromAvgByItem[$sItem])){
+										$tDiffFromAvgByItem[$sItem] = Array();
+									}
+									if (empty($sScore) == false){
+										array_push($tDiffFromAvgByItem[$sItem], $sScore);
+									}
+								}
+							}
+						}
+
+						$tWLeft = Array();
+						foreach ($tDiffFromAvg as $sTaster => $tScores) {
+							if (empty($sTaster) == false){
+								if (empty($tWLeft[$sTaster])){
+									$tWLeft[$sTaster] = Array();
+								}
+								foreach ($tScores as $sItem => $nScore) {
+									if (empty($nScore) ){
+										$tWLeft[$sTaster][$sItem] = 0;
+									}else{
+										$tWLeft[$sTaster][$sItem] = (array_sum($tDiffFromAvgByItem[$sItem])-$nScore)/((count($tItemScores[$sItem])-1)*array_sum($tDiffFromAvgByItem[$sItem]));
+									}
+								}
+							}
+						}
+
+						$tSumOfDiffFromAvg = Array();
+						foreach($tDiffFromAvg as $sTaster => $tScores){
+							$tSumOfDiffFromAvg[$sTaster] = array_sum($tScores);
+						}
+
+						//print_r(korrelByTaster("Kertai", $tData, $tTasterAvgScore, $tItemAvg));
+						//print_r($tDiffFromAvg["Romsics"]);
+						//print_r($tSumOfDiffFromAvg["Kertai"]);
+
+						$a = Array(
+							"Romsics" => Array(
+								'Co_HITS' => 1,
+								'Correlation' => 0.99,
+								'Sum of Differences' => 0.86,
+								),
+							"Kertai" => Array(
+								'Co_HITS' => 0.91,
+								'Correlation' => 1,
+								'Sum of Differences' => 0.72,
+								),
+							"Kalocsai" => Array(
+								'Co_HITS' => 0.93,
+								'Correlation' => 0.82,
+								'Sum of Differences' => 0.71,
+								),
+							"Mészáros" => Array(
+								'Co_HITS' => 0.9,
+								'Correlation' => 0.63,
+								'Sum of Differences' => 0.58,
+								),
+							"Varga D." => Array(
+								'Co_HITS' => 0.92,
+								'Correlation' => 0.93,
+								'Sum of Differences' => 0.79,
+								),
+							"Vörös G." => Array(
+								'Co_HITS' => 0.97,
+								'Correlation' => 0.93,
+								'Sum of Differences' => 1,
+								),
+							"Darrel" => Array(
+								'Co_HITS' => 0.97,
+								'Correlation' => 0.93,
+								'Sum of Differences' => 0.91,
+								),
+							);
+						//print_r($a);
+
+						function transpose($array) {
+							$transposed_array = array();
+							if ($array) {
+								foreach ($array as $row_key => $row) {
+									if (is_array($row) && !empty($row)) { //check to see if there is a second dimension
+										foreach ($row as $column_key => $element) {
+											$transposed_array[$column_key][$row_key] = $element;
+										}
+									}else {
+										$transposed_array[0][$row_key] = $row;
+									}
+								}
+								return $transposed_array;
+							}
+						}
+						$b = transpose($a);;
+						// print_r("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");;
+						// print_r($b);;
+						// print_r("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");;
+						// function matrixMult($m1,$m2){
+						// 	$m3 = Array();
+						// 	foreach ($m1 as $sTasterM1 => $tScoresM1) {
+						// 		foreach ($tScoresM1 as $sItemM1 => $sScoreM1){
+						// 			if (empty($m3[$sTasterM1])){
+						// 				$m3[$sTasterM1] = Array();
+						// 			}
+						// 			if (empty($m3[$sTasterM1][$sItemM1])){
+						// 				$m3[$sTasterM1][$sItemM1] = 0;
+						// 			}
+						// 			foreach ($m2 as $sItemM2 => $tTastersM2) {
+						// 				$m3[$sTasterM1][$sItemM1] = $m3[$sTasterM1][$sItemM1] + $m1[$sTasterM1][$sItemM2]*$m2[$sItemM2][$sTasterM1];
+
+						// 			}
+
+						// 		}
+						// 	}
+						// 	return $m3;
+						// }
+						// $c = matrixMult($a, $b);
+						// print_r($c);;
+
+						//print_r(Correlation($tData["Darrel"], $tItemAvg));
+						$aa = Array('abc','def','ghi');
+						?>
+					</table>
+				</div>
+				<br />
+				<br />
+				<h2>Grafikonok &rsaquo;</h2>
+				<script type='text/javascript'>
+					<?php
+					$nCounter = 0;;
+					echo "var javascript_array = [ \n";
+					echo "['Kóstolók', 'CoHITS', 'Correlant', 'Sum of Differences'],\n";
+					foreach($a as $sTaster => $tScores){
+						echo "['" . $sTaster ."'";;
+						foreach ($tScores as $sItem => $sScore) {
+							echo ", " . $sScore;
+						}
+						echo "],\n";;
+					}
+					echo "];\n";;
+					?>
+					google.load('visualization', '1.0', {'packages':['corechart']});
+
+					google.setOnLoadCallback(drawChart);
+					function drawChart() {
+						var data = google.visualization.arrayToDataTable(javascript_array);
+
+						var options = {};
+
+						var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+						chart.draw(data, options);
+					}
+				</script>
+				<div id="chart_div"></div>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+				<br />
+				<br />
+				<h2>Demo &rsaquo;</h2>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+				<br />
+				<br />
+				<h2>Demo &rsaquo;</h2>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				</p>
+			</div>
+		</div>
+
+		<!--THE FOOTER-->
+		<div id="footer">
+			<div id="footerText">
+				<p>Készítette - 2014 Varga Tamás</p>
+				&nbsp;
+			</div>
+		</div>
+	</div>
+</body>
+</html>

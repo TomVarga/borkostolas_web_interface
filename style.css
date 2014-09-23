@@ -169,6 +169,21 @@ a {
 
 /* Tables */
 
+#inputMatrix {
+	overflow: auto;
+}
+
+.headerInput{
+	width: 40px;
+}
+
+.matrixInput{
+	width: 80px;
+	height: 10px;
+	font-family: arial, monospace;
+	color: black;
+	font-size:10px;
+}
 
 #scrollingTable {
 	overflow: auto;
@@ -207,6 +222,41 @@ table tr:nth-child(even) {
 table tr td, th{
 	border-bottom: 1px solid black;
 	padding: 2px;
+}
+
+/* chart */
+
+.graph {
+	clear: both;
+	width: 100%;
+	display:inline-block;
+}
+
+.chartGraph {
+	width: 70%;
+	float:left;
+}
+
+.chartLegend {
+	width: 25%;
+	float:left;
+}
+
+.legend {
+	border: 1px dotted #a0a0a0;
+	float:left;
+}
+
+.legend .title {
+	font-family: arial, monospace;
+	color: black;
+	font-size: 12px;
+
+	display: block;
+	margin: 0.5em;
+	border-style: solid;
+	border-width: 0 0 0 1em;
+	padding: 0 0.3em;
 }
 
 /* new table stlye */
