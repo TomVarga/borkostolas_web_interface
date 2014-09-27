@@ -242,7 +242,7 @@
 						}
 						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
 						xmlhttpEIG.send();
-					} else if (algoritmus == "valami"){
+					} else {
 						document.getElementById("result").innerHTML = xmlhttp.responseText;
 					}
 				}
@@ -284,11 +284,11 @@
 			document.getElementById("borok").value = nBorok;
 			addMatrix()
 			var data = ["borasz1","1","2","3","4","5",
-				"borasz3","1","2","4","3","5",
 				"borasz2","1","2","3","5","4",
-				"borasz6","5","4","3","2","1",
-				"borasz5","4","3","2","1","5",
+				"borasz3","1","2","4","3","5",
 				"borasz4","1","2","4","5","3",
+				"borasz5","4","3","2","1","5",
+				"borasz6","5","4","3","2","1",
 				"sdfsdfsd","3","23","2","2","2",];
 
 			var nCounter = 0;
@@ -355,8 +355,14 @@
 					<input type="text" id="borok" name="Borok száma" class="headerInput" value=""><br />
 					Algoritmus:
 					<select id="algoritmus" name="Algoritmus">
-						<option value="valami">valami</option>
 						<option value="hits">Co_HITS</option>
+						
+						<option value="hamming">Hamming</option>
+						<option value="cosine">Koszinusz</option>
+						<option value="precedence">Precedencia</option>
+						<option value="adjacency">Összefüggőségi</option>
+						<option value="positional">Pozíció szerint</option>
+						<option value="sajat">Saját</option>
 					</select>
 					<br />
 					<a href="#" id="matrixGenerator" onclick="addMatrix()">Beviteli mezők generálása</a><br />

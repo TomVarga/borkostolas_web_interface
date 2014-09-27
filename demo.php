@@ -1,7 +1,6 @@
 <?php
 	include 'HITSstart.php';
-	include 'HammingStart.php';
-	include 'precedenceStart.php';
+	include 'calculateGivenAlgorithm.php';
 
 	$str=$_REQUEST["q"];
 	$array = json_decode($str);
@@ -10,7 +9,7 @@
 
 	if ($sAlgoritmus == "hits"){
 		calculateHITS($array);
-	} else if ($sAlgoritmus == 'valami'){
-		calculatePrecedence($array);
+	} else {
+		calculateGivenAlgorithm($array);
 	}
 ?>
