@@ -45,7 +45,7 @@
 			graph.appendChild(chartLegend);
 			// alert(graphData[0]);
 			var ctx = canvas.getContext("2d");
-			var options = {};
+			var options = {multiTooltipTemplate: "<%= datasetLabel %>: <%= value %>"};
 			var data = {
 				labels: ["1. Kóstoló","2. Kóstoló","3. Kóstoló","4. Kóstoló","5. Kóstoló","6. Kóstoló","7. Kóstoló"],
 				datasets: [{"label":"CoHITS","data":[0.150807820871,0.14264075743,0.140370653779,0.135605804035,0.136630841819,0.147008065002,0.146936057064]},{"label":"Korreláció","data":[0.819838622814,0.767161200075,0.639048657415,0.531053310191,0.74315011031,0.695260795848,0.61544368154]},{"label":"Különbségek átlaga","data":[0.89796775814,0.715520880337,0.896240519253,0.599607230856,0.800791717914,1,0.919458316967]}],
