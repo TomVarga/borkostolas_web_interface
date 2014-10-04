@@ -9,8 +9,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
 	<!--Load the AJAX API-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="Chart.min.js"></script>
+	<script type="text/javascript" src="Legend.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script>
+	<script type="text/javascript">
 		$(function () {
 			$('.topScrollingBlockWrapper').on('scroll', function (e) {
 				$('.leftTableContainer').scrollLeft($('.topScrollingBlockWrapper').scrollLeft());
@@ -22,6 +24,64 @@
 		$(window).on('load', function (e) {
 			$('.topScroll').width($('.leftTable').width());
 		});
+	</script>
+	<script type='text/javascript'>
+		google.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var graph = document.getElementById("graph");
+			while (graph.hasChildNodes()) {
+				graph.removeChild(graph.lastChild);
+			}
+			var chartGraph = document.createElement('div');
+			chartGraph.id = 'chartGraph';
+			chartGraph.className = 'chartGraph';
+			var canvas = document.createElement('canvas');
+			canvas.id = 'myChart';
+			chartGraph.appendChild(canvas);
+			graph.appendChild(chartGraph);
+			var chartLegend = document.createElement('div');
+			chartLegend.id = 'chartLegend';
+			chartLegend.className = 'chartLegend';
+			graph.appendChild(chartLegend);
+			// alert(graphData[0]);
+			var ctx = canvas.getContext("2d");
+			var options = {};
+			var data = {
+				labels: ["1. Kóstoló","2. Kóstoló","3. Kóstoló","4. Kóstoló","5. Kóstoló","6. Kóstoló","7. Kóstoló"],
+				datasets: [{"label":"CoHITS","data":[0.150807820871,0.14264075743,0.140370653779,0.135605804035,0.136630841819,0.147008065002,0.146936057064]},{"label":"Korreláció","data":[0.819838622814,0.767161200075,0.639048657415,0.531053310191,0.74315011031,0.695260795848,0.61544368154]},{"label":"Különbségek átlaga","data":[0.89796775814,0.715520880337,0.896240519253,0.599607230856,0.800791717914,1,0.919458316967]}],
+			};
+			// var nColor = 220;
+			// var nColorGap = 40;
+
+			var tColors = [
+				'255,99,71',
+				'255,215,0',
+				'32,178,170',
+				'124,252,0',
+				'0,0,128',
+				'75,0,130',
+				'255,0,255',
+				'245,222,179',
+				'139,69,19',
+				'112,128,144',
+				'192,192,192'
+			];
+			for(i=0 ; i<data.datasets.length ; i++){
+				var obj = data.datasets[i];
+				obj.fillColor = "rgba("+tColors[i]+",0.5)";
+				obj.strokeColor = "rgba("+tColors[i]+",0.8)";
+				obj.highlightFill = "rgba("+tColors[i]+",0.75)";
+				obj.highlightStroke = "rgba("+tColors[i]+",1)";
+
+				// obj.fillColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.5)";
+				// obj.strokeColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.8)";
+				// obj.highlightFill = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.75)";
+				// obj.highlightStroke = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",1)";
+			}
+			ctx.canvas.width  = document.getElementById("chartGraph").clientWidth;
+			var myBarChart = new Chart(ctx).Bar(data, options);
+			legend(document.getElementById("chartLegend"), data);
+		}
 	</script>
 </head>
 
@@ -67,20 +127,20 @@
 					<div class="topScroll"><br /></div>
 				</div>
 				<div class="tableContainer">
-				<div class="leftTableContainer">
-					<table class="leftTable">
-						<thead>
-							<tr>
-								<th>Sorszám</th>
-								<th>Bor</th>
-								<th>Pincészet</th>
-								<th></th>
-								<th>Évjárat</th>
-								<th>Összetétel</th>
-								<th>Ár</th>
-							</tr>
-						</thead>
-						<tbody>
+					<div class="leftTableContainer">
+						<table class="leftTable">
+							<thead>
+								<tr>
+									<th>Sorszám</th>
+									<th>Bor</th>
+									<th>Pincészet</th>
+									<th></th>
+									<th>Évjárat</th>
+									<th>Összetétel</th>
+									<th>Ár</th>
+								</tr>
+							</thead>
+							<tbody>
 <?php
 // http://www.textfixer.com/html/csv-convert-table.php
 ?>
@@ -142,23 +202,23 @@
 <tr><td>56</td><td>Törökverő</td><td>Demeter Pincészet</td><td>Egri </td><td>2009</td><td>cabernet franc 40%, kékfrankos 40%, merlot 20%</td><td>1,800 Ft</td></tr>
 <tr><td></td></tr>
 
-						</tbody>
-					</table>
-				</div>
-				<div class="rightTableContainer">
-					<table class="rightTable">
-						<thead>
-							<tr>
-								<th>1. Kóstoló</th>
-								<th>2. Kóstoló</th>
-								<th>3. Kóstoló</th>
-								<th>4. Kóstoló</th>
-								<th>5. Kóstoló</th>
-								<th>6. Kóstoló</th>
-								<th>7. Kóstoló</th>
-							</tr>
-						</thead>
-						<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div class="rightTableContainer">
+						<table class="rightTable">
+							<thead>
+								<tr>
+									<th>1. Kóstoló</th>
+									<th>2. Kóstoló</th>
+									<th>3. Kóstoló</th>
+									<th>4. Kóstoló</th>
+									<th>5. Kóstoló</th>
+									<th>6. Kóstoló</th>
+									<th>7. Kóstoló</th>
+								</tr>
+							</thead>
+							<tbody>
 
 <tr><td>16.4</td><td>16.9</td><td>16.8</td><td>16.8</td><td>18</td><td>17</td><td>16.5</td></tr>
 <tr><td>14.8</td><td>17.5</td><td>14.4</td><td>12</td><td>14</td><td>15</td><td>16.5</td></tr>
@@ -218,79 +278,26 @@
 <tr><td>12</td><td>10</td><td>16</td><td>17.7</td><td>15.2</td><td>18.6</td><td>17.5</td></tr>
 <tr><td></td></tr>
 
-						</tbody>
-					</table>
+							</tbody>
+						</table>
+					</div>
 				</div>
+				<div id='result'>
+					<br />
+					<h2>Eredmények &rsaquo;</h2>
+					<div id="graph"></div>
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
+					<br />
 				</div>
-				<br />
-				<br />
-				<h2>Eredmények &rsaquo;</h2>
-				<script type='text/javascript'>
-					<?php
-					$a = Array(
-						"Romsics" => Array(
-							'Co_HITS' => 1,
-							'Correlation' => 0.99,
-							'Sum of Differences' => 0.86,
-							),
-						"Kertai" => Array(
-							'Co_HITS' => 0.91,
-							'Correlation' => 1,
-							'Sum of Differences' => 0.72,
-							),
-						"Kalocsai" => Array(
-							'Co_HITS' => 0.93,
-							'Correlation' => 0.82,
-							'Sum of Differences' => 0.71,
-							),
-						"Mészáros" => Array(
-							'Co_HITS' => 0.9,
-							'Correlation' => 0.63,
-							'Sum of Differences' => 0.58,
-							),
-						"Varga D." => Array(
-							'Co_HITS' => 0.92,
-							'Correlation' => 0.93,
-							'Sum of Differences' => 0.79,
-							),
-						"Vörös G." => Array(
-							'Co_HITS' => 0.97,
-							'Correlation' => 0.93,
-							'Sum of Differences' => 1,
-							),
-						"Darrel" => Array(
-							'Co_HITS' => 0.97,
-							'Correlation' => 0.93,
-							'Sum of Differences' => 0.91,
-							),
-						);
-					$nCounter = 0;;
-					echo "var javascript_array = [ \n";
-					echo "['Kóstolók', 'CoHITS', 'Correlant', 'Sum of Differences'],\n";
-					foreach($a as $sTaster => $tScores){
-						echo "['" . $sTaster ."'";;
-						foreach ($tScores as $sItem => $sScore) {
-							echo ", " . $sScore;
-						}
-						echo "],\n";;
-					}
-					echo "];\n";;
-					?>
-					google.load('visualization', '1.0', {'packages':['corechart']});
-
-					google.setOnLoadCallback(drawChart);
-					function drawChart() {
-						var data = google.visualization.arrayToDataTable(javascript_array);
-
-						var options = {};
-
-						var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-						chart.draw(data, options);
-					}
-				</script>
-				<div id="chart_div"></div>
 			</div>
 		</div>
+		
 
 		<!--THE FOOTER-->
 		<div id="footer">

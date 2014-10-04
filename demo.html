@@ -8,29 +8,9 @@
 	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
 		<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
 		<script type="text/javascript" src="Chart.min.js"></script>
+		<script type="text/javascript" src="Legend.js"></script>
 		<script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
 		<script type='text/javascript'>
-
-		function legend(parent, data) {
-			parent.className = 'legend';
-			var datas = data.hasOwnProperty('datasets') ? data.datasets : data;
-
-			// remove possible children of the parent
-			while(parent.hasChildNodes()) {
-				parent.removeChild(parent.lastChild);
-			}
-
-			datas.forEach(function(d) {
-				var title = document.createElement('span');
-				title.className = 'title';
-				title.style.borderColor = d.hasOwnProperty('strokeColor') ? d.strokeColor : d.color;
-				title.style.borderStyle = 'solid';
-				parent.appendChild(title);
-
-				var text = document.createTextNode(d.label);
-				title.appendChild(text);
-			});
-		}
 
 		var nMaxSize = 10000;
 		function isNumber(input){
@@ -185,7 +165,7 @@
 				'112,128,144',
 				'192,192,192'
 			];
-			for(var i=0;i<data.datasets.length;i++){
+			for(i=0;i<data.datasets.length;i++){
 				var obj = data.datasets[i];
 				obj.fillColor = "rgba("+tColors[i]+",0.5)";
 				obj.strokeColor = "rgba("+tColors[i]+",0.8)";
@@ -447,7 +427,6 @@
 			</div>
 			<!--MAIN CONTENT-->
 			<div id="content">
-
 				<h2> Demó &rsaquo;</h2>
 				<p>
 					<a href="#" id="test" onclick="test()">Teszt adatok használata</a><br />
@@ -473,15 +452,13 @@
 					<a href="#" id="matrixGenerator" onclick="addMatrix()">Beviteli mezők generálása</a><br />
 					<br />
 				</p>
-				<div id="inputMatrix">
-				</div>
-				<div id="submitMatrix">
-				</div>
+				<div id="inputMatrix"></div>
+				<div id="submitMatrix"></div>
 				<div id="result">
+					<br />
 					<div id="textResult" class="textResult"></div>
 					<div id="graph" class="graph"></div>
 				</div>
-				
 			</div>
 		</div>
 
