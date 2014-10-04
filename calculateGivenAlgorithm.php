@@ -251,8 +251,8 @@
 					$egyik;
 					$masik;
 					for( $k=0;$k<$nBorok;++$k){
-						$egyik[$k] = $ertekelesek[$tOrderOfTasters[$i]][$k];
-						$masik[$k] = $ertekelesek[$tOrderOfTasters[$j]][$k];
+						$egyik[$k] = $ertekelesek[$tOrderOfTasters[$i-1]][$k];
+						$masik[$k] = $ertekelesek[$tOrderOfTasters[$j-1]][$k];
 					}
 					// print_r($egyik);
 				switch ( $sAlgoritmus ) {

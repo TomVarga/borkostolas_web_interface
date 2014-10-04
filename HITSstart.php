@@ -7,7 +7,11 @@
 		foreach($a as $key => $value){
 			$nSumOfDeviationFromAvg = $nSumOfDeviationFromAvg + pow(($nAvg - $value),2);
 		}
-		return sqrt($nSumOfDeviationFromAvg/(count($a)-1));
+		$divisor = 1;
+		if ((count($a)-1) != 0){
+			$divisor = count($a)-1;
+		}
+		return sqrt($nSumOfDeviationFromAvg/$divisor);
 	}
 	function korrelByTaster($sTaster, $tData, $tTasterAvgScore, $tItemAvg){
 		// algorithm used: http://office.microsoft.com/hu-hu/excel-help/korrel-fuggveny-HP010342332.aspx

@@ -223,6 +223,7 @@
 					if (algoritmus == "hits"){
 						var data = JSON.parse(xmlhttp.responseText);
 						// let the users client calculate eigenvalues and vectors.
+
 						var B = numeric.eig(numeric.transpose(data.matrix));
 
 						var xmlhttpEIG=new XMLHttpRequest();
@@ -303,6 +304,28 @@
 				}
 			}
 		}
+		function probaharom(){
+			var nKostolok = 3;
+			var nBorok = 3;
+			document.getElementById("kostolok").value = nKostolok;
+			document.getElementById("borok").value = nBorok;
+			addMatrix()
+			var data = ["borasz1","1","2","3",
+				"borasz5","2","3","",
+				"borasz6","5","4","",];
+
+			var nCounter = 0;
+			for (j=0;j<nKostolok;j++) {
+				for (i=0;i<nBorok+1;i++) {
+					var ij = document.getElementById(i+":"+j);
+					if (!ij){
+						break;
+					}
+					ij.value=data[nCounter];
+					nCounter=nCounter+1;
+				}
+			}
+		}
 	</script>
 </head>
 
@@ -348,6 +371,7 @@
 				<p>
 					<a href="#" id="test" onclick="test()">Teszt adatok használata</a><br />
 					<a href="#" id="probaketto" onclick="probaketto()">Teszt proba 2</a><br />
+					<a href="#" id="probaharom" onclick="probaharom()">Teszt proba 3</a><br />
 					<br />
 					Kóstolók száma:
 					<input type="text" id="kostolok" name="Kóstolók száma" class="headerInput" value=""><br />
