@@ -22,7 +22,7 @@
 				$tTasterSpecificItemAvg[$sItem] = $nItemAvg;
 			}
 		}
-
+		
 		$nTasterAvg = $tTasterAvgScore[$sTaster];
 		$nAvgAvg = array_sum($tTasterSpecificItemAvg) / count($tTasterSpecificItemAvg);
 		$nDivident = 0;
@@ -36,11 +36,15 @@
 						$nTasterPartSquared = $nTasterPartSquared + pow($nScore-$nTasterAvg,2);
 						$nAvgPartSquared = $nAvgPartSquared + pow($tTasterSpecificItemAvg[$sItem]-$nAvgAvg,2);
 					}
-					
 				}
+				
 			}
 		}
-		return $nDivident/sqrt($nTasterPartSquared*$nAvgPartSquared);
+		$nReturn = 0;
+		if (!($nTasterPartSquared == 0 || $nAvgPartSquared == 0)){
+			$nReturn = $nDivident/sqrt($nTasterPartSquared*$nAvgPartSquared);
+		}
+		return $nReturn;
 	}
 
 	function calculateHITS($array){
@@ -88,9 +92,7 @@
 
 		$tItemAvg = Array();
 		foreach($tItemScores as $sItem => $tScores){
-			if (empty($sItem) == false){
-				$tItemAvg[$sItem] = array_sum($tScores)/count($tScores);
-			}
+			$tItemAvg[$sItem] = array_sum($tScores)/count($tScores);
 		}
 
 		$tTasterAvgScore = Array();

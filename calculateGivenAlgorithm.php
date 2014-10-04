@@ -293,7 +293,12 @@
 				$sum += $tabla[$i][$j];
 			
 			for($j=1;$j<=$nKostolok;++$j){
-				$tabla[$i][$j] *= 0.85/$sum;
+				// XXX division by 0 hack
+				if ($sum == 0){
+					$tabla[$i][$j] = 0;
+				}else{
+					$tabla[$i][$j] *= 0.85/$sum;
+				}
 				$tabla[$i][$j] += 0.15/$nKostolok;
 			}
 		}
@@ -317,8 +322,12 @@
 					break;
 		}
 
+		$tReturnArray = Array();
+		for ( $i = 1; $i <= $nKostolok; $i++ ){
+			$tReturnArray[$tOrderOfTasters[$i-1]] = $eredmeny[$i];
+		}
 
-		echo print_r($eredmeny);
+		echo json_encode($tReturnArray);
 //----------------------
 // ADATBAZISOS
 
