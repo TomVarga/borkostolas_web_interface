@@ -112,6 +112,11 @@ a {
 
 /* Main content (WHITE) area */
 
+#result {
+	margin-top: 20px;
+	height: 185px;
+}
+
 #contentWrapper {
 	clear: both;
 	width: 960px;
