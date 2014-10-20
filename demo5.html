@@ -6,13 +6,12 @@
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<!-- <script type="text/javascript" src="Chart.min.js"></script> -->
-		<!-- <script type="text/javascript" src="Legend.js"></script> -->
+		<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
+		<script type="text/javascript" src="Chart.min.js"></script>
+		<script type="text/javascript" src="Legend.js"></script>
 		<script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
 		<script type='text/javascript'>
-		google.load('visualization', '1.0', {'packages':['corechart']});
-		// google.setOnLoadCallback(drawChart);
+
 		var nMaxSize = 10000;
 		function getDecPrec(num) {
 			return (num.split('.')[1] || []).length;
@@ -132,51 +131,63 @@
 			submitMatrix.appendChild(p);
 		}
 		function drawChart(graphData){
-			// alert(JSON.stringify(graphData));
-			// google.load('visualization', '1.0', {'packages':['corechart']});
-
-			// Set a callback to run when the Google Visualization API is loaded.
-			// google.setOnLoadCallback(drawChart);
-
-			// Callback that creates and populates a data table,
-			// instantiates the pie chart, passes in the data and
-			// draws it.
-
-							// Create the data table.
-			// var data = google.visualization.arrayToDataTable(
-			// 	var a = [
-			// 	['Kóstoló', 'CoHITS'],
-			// 	['tom',  18.472],
-			// 	['6. kóstoló',  100.000],
-			// 	['7. kóstoló',  95.321],
-			// 	['8. kóstoló',  94.209],
-			// 	['9. kóstoló',  90.758],
-			// 	['10. kóstoló',  91.243],
-			// 	['11. kóstoló',  96.965],
-			// 	['12. kóstoló',  99.031],
-			// ];
-			// document.getElementById('result').innerHTML = JSON.stringify(graphData);
-			// );
-			var data = google.visualization.arrayToDataTable(graphData);
-
-			var view = new google.visualization.DataView(data);
-			view.setColumns([0, 1,
-				{ calc: "stringify",
-				sourceColumn: 1,
-				type: "string",
-				role: "annotation" }
-				]);
+			var graph = document.getElementById("graph");
+			while (graph.hasChildNodes()) {
+				graph.removeChild(graph.lastChild);
+			}
+			var chartGraph = document.createElement('div');
+			chartGraph.id = 'chartGraph';
+			chartGraph.className = 'chartGraph';
+			var canvas = document.createElement('canvas');
+			canvas.id = 'myChart';
+			chartGraph.appendChild(canvas);
+			graph.appendChild(chartGraph);
+			var chartLegend = document.createElement('div');
+			chartLegend.id = 'chartLegend';
+			chartLegend.className = 'chartLegend';
+			graph.appendChild(chartLegend);
+			// alert(graphData[0]);
+			var ctx = canvas.getContext("2d");
 			var options = {
-				// vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+				multiTooltipTemplate: "<%= datasetLabel %>: <%= value %>"
+				// scaleShowValues: true,
+				// scaleValuePaddingX: 13,
+				// scaleValuePaddingY: 13
 			};
+			var data = {
+				labels: graphData.labels,
+				datasets: graphData.datasets,
+			};
+			// var nColor = 220;
+			// var nColorGap = 40;
+			var tColors = [
+				'255,99,71',
+				'255,215,0',
+				'32,178,170',
+				'124,252,0',
+				'0,0,128',
+				'75,0,130',
+				'255,0,255',
+				'245,222,179',
+				'139,69,19',
+				'112,128,144',
+				'192,192,192'
+			];
+			for(i=0;i<data.datasets.length;i++){
+				var obj = data.datasets[i];
+				obj.fillColor = "rgba("+tColors[i]+",0.5)";
+				obj.strokeColor = "rgba("+tColors[i]+",0.8)";
+				obj.highlightFill = "rgba("+tColors[i]+",0.75)";
+				obj.highlightStroke = "rgba("+tColors[i]+",1)";
 
-			// Instantiate and draw our chart, passing in some options.
-			var chart = new google.visualization.BarChart(document.getElementById("graph"));
-			chart.draw(view, options);
-
-			// var chart = new google.visualization.BarChart(document.getElementById('graph'));
-			// chart.draw(data, options);
-			
+				// obj.fillColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.5)";
+				// obj.strokeColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.8)";
+				// obj.highlightFill = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.75)";
+				// obj.highlightStroke = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",1)";
+			}
+			ctx.canvas.width  = document.getElementById("chartGraph").clientWidth;
+			var myBarChart = new Chart(ctx).Bar(data, options);
+			legend(document.getElementById("chartLegend"), data);
 		}
 		function addTextResultHeader(){
 			var textResult = document.getElementById("textResult");
@@ -295,15 +306,10 @@
 								// norm to hundred
 								var max = Math.max.apply(null, CoHITS);
 								for (var i=0; i < CoHITS.length; i++){
-									CoHITS[i] = (CoHITS[i]/max*100);
+									CoHITS[i] = CoHITS[i]/max*100;
 								}
 								// alert(max);
-								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
-								var graphData = [['Kóstoló', 'CoHITS']];
-								for (var i=0; i < CoHITS.length; i++){
-									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
-								}
-								// alert(graphData);
+								var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
 								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
 								// if (bZeroCollerlationFound){
 								// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
@@ -610,7 +616,34 @@
 			</div>
 			<!--MAIN CONTENT-->
 			<div id="content">
-				<?php
+				<h2> Demó &rsaquo;</h2>
+				<p>
+<!-- 					<a href="#" id="test" onclick="test()">Teszt adatok használata</a><br />
+					<a href="#" id="probaketto" onclick="probaketto()">Teszt proba 2</a><br />
+					<a href="#" id="probaharom" onclick="probaharom()">Teszt proba 3</a><br />
+					<br />
+					Kóstolók száma:
+					<input type="text" id="kostolok" name="Kóstolók száma" class="headerInput" value=""><br />
+					Borok száma:
+					<input type="text" id="borok" name="Borok száma" class="headerInput" value=""><br /> -->
+					Algoritmus:
+					<select id="algoritmus" name="Algoritmus">
+						<option value="hits">Co_HITS</option>
+
+						<option value="hamming">Hamming</option>
+						<option value="cosine">Koszinusz</option>
+						<option value="precedence">Precedencia</option>
+						<option value="adjacency">Összefüggőségi</option>
+						<option value="positional">Pozíció szerint</option>
+						<option value="sajat">Saját</option>
+					</select>
+					<br />
+					<a href="#" id="matrixGenerator" onclick="addMatrix()">Beviteli mezők generálása</a><br />
+				</p>
+				<div class="topScrollingBlockWrapper">
+					<div class="topScroll"><br /></div>
+				</div>
+					<?php
 					if ($login->isUserLoggedIn() == true) {
 						// echo "logged in". $_SESSION['user_id'];
 						$db_connection = null;
@@ -630,33 +663,7 @@
 							return false;
 						}
 						databaseConnection();
-				echo "<h2> Demó &rsaquo;</h2>
-				<p>
-<!-- 			<a href='#' id='test' onclick='test()'>Teszt adatok használata</a><br /> -->
-<!--				<a href='#' id='probaketto' onclick='probaketto()'>Teszt proba 2</a><br /> -->
-<!--				<a href='#' id='probaharom' onclick='probaharom()'>Teszt proba 3</a><br /> -->
-<!--				<br /> -->
-<!--				Kóstolók száma: -->
-<!--				<input type='text' id='kostolok' name='Kóstolók száma' class='headerInput' value=''><br /> -->
-<!--				Borok száma: -->
-<!--				<input type='text' id='borok' name='Borok száma' class='headerInput' value=''><br /> -->
-					Algoritmus:
-					<select id='algoritmus' name='Algoritmus'>
-						<option value='hits'>Co_HITS</option>
-
-						<option value='hamming'>Hamming</option>
-						<option value='cosine'>Koszinusz</option>
-						<option value='precedence'>Precedencia</option>
-						<option value='adjacency'>Összefüggőségi</option>
-						<option value='positional'>Pozíció szerint</option>
-						<option value='sajat'>Saját</option>
-					</select>
-					<br />
-					<!-- <a href='#' id='matrixGenerator' onclick='addMatrix()'>Beviteli mezők generálása</a><br /> -->
-				</p>
-				<div class='topScrollingBlockWrapper'>
-					<div class='topScroll'><br /></div>
-				</div>
+				echo "
 				<div class='tableContainer'>
 					<div class='leftTableContainerForInput'>
 						<table class='leftTableForInput'>

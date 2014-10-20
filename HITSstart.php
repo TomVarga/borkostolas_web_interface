@@ -210,7 +210,11 @@
 		$tSumOfDiff = Array();
 		$nMinOfSumOffDiffFromAvg = min($tSumOfDiffFromAvg);
 		foreach ($tSumOfDiffFromAvg as $sTaster => $value) {
-			$tSumOfDiff[$sTaster] = ($nMinOfSumOffDiffFromAvg/$value);
+			if ($value == 0){ // XXX division by zero hack
+				$tSumOfDiff[$sTaster] = 0;
+			}else{
+				$tSumOfDiff[$sTaster] = ($nMinOfSumOffDiffFromAvg/$value);
+			}
 		}
 
 		$nCounter = 0;
@@ -308,7 +312,5 @@
 
 		// do an AJAX call here and use javascript to calculate the eigenvalues and vector so we don't strain the server
 
-
-		// echo "poop";
 	}
 ?>

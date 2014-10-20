@@ -6,17 +6,13 @@
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<!-- <script type="text/javascript" src="Chart.min.js"></script> -->
-		<!-- <script type="text/javascript" src="Legend.js"></script> -->
+		<!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
+		<script type="text/javascript" src="Chart.min.js"></script>
+		<script type="text/javascript" src="Legend.js"></script>
 		<script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
 		<script type='text/javascript'>
-		google.load('visualization', '1.0', {'packages':['corechart']});
-		// google.setOnLoadCallback(drawChart);
+
 		var nMaxSize = 10000;
-		function getDecPrec(num) {
-			return (num.split('.')[1] || []).length;
-		}
 		function isNumber(input){
 			var numbers = /^[0-9]+$/;
 			if(input.value.match(numbers)){
@@ -132,51 +128,58 @@
 			submitMatrix.appendChild(p);
 		}
 		function drawChart(graphData){
-			// alert(JSON.stringify(graphData));
-			// google.load('visualization', '1.0', {'packages':['corechart']});
-
-			// Set a callback to run when the Google Visualization API is loaded.
-			// google.setOnLoadCallback(drawChart);
-
-			// Callback that creates and populates a data table,
-			// instantiates the pie chart, passes in the data and
-			// draws it.
-
-							// Create the data table.
-			// var data = google.visualization.arrayToDataTable(
-			// 	var a = [
-			// 	['Kóstoló', 'CoHITS'],
-			// 	['tom',  18.472],
-			// 	['6. kóstoló',  100.000],
-			// 	['7. kóstoló',  95.321],
-			// 	['8. kóstoló',  94.209],
-			// 	['9. kóstoló',  90.758],
-			// 	['10. kóstoló',  91.243],
-			// 	['11. kóstoló',  96.965],
-			// 	['12. kóstoló',  99.031],
-			// ];
-			// document.getElementById('result').innerHTML = JSON.stringify(graphData);
-			// );
-			var data = google.visualization.arrayToDataTable(graphData);
-
-			var view = new google.visualization.DataView(data);
-			view.setColumns([0, 1,
-				{ calc: "stringify",
-				sourceColumn: 1,
-				type: "string",
-				role: "annotation" }
-				]);
-			var options = {
-				// vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+			var graph = document.getElementById("graph");
+			while (graph.hasChildNodes()) {
+				graph.removeChild(graph.lastChild);
+			}
+			var chartGraph = document.createElement('div');
+			chartGraph.id = 'chartGraph';
+			chartGraph.className = 'chartGraph';
+			var canvas = document.createElement('canvas');
+			canvas.id = 'myChart';
+			chartGraph.appendChild(canvas);
+			graph.appendChild(chartGraph);
+			var chartLegend = document.createElement('div');
+			chartLegend.id = 'chartLegend';
+			chartLegend.className = 'chartLegend';
+			graph.appendChild(chartLegend);
+			// alert(graphData[0]);
+			var ctx = canvas.getContext("2d");
+			var options = {multiTooltipTemplate: "<%= datasetLabel %>: <%= value %>"};
+			var data = {
+				labels: graphData.labels,
+				datasets: graphData.datasets,
 			};
+			// var nColor = 220;
+			// var nColorGap = 40;
+			var tColors = [
+				'255,99,71',
+				'255,215,0',
+				'32,178,170',
+				'124,252,0',
+				'0,0,128',
+				'75,0,130',
+				'255,0,255',
+				'245,222,179',
+				'139,69,19',
+				'112,128,144',
+				'192,192,192'
+			];
+			for(i=0;i<data.datasets.length;i++){
+				var obj = data.datasets[i];
+				obj.fillColor = "rgba("+tColors[i]+",0.5)";
+				obj.strokeColor = "rgba("+tColors[i]+",0.8)";
+				obj.highlightFill = "rgba("+tColors[i]+",0.75)";
+				obj.highlightStroke = "rgba("+tColors[i]+",1)";
 
-			// Instantiate and draw our chart, passing in some options.
-			var chart = new google.visualization.BarChart(document.getElementById("graph"));
-			chart.draw(view, options);
-
-			// var chart = new google.visualization.BarChart(document.getElementById('graph'));
-			// chart.draw(data, options);
-			
+				// obj.fillColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.5)";
+				// obj.strokeColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.8)";
+				// obj.highlightFill = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.75)";
+				// obj.highlightStroke = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",1)";
+			}
+			ctx.canvas.width  = document.getElementById("chartGraph").clientWidth;
+			var myBarChart = new Chart(ctx).Bar(data, options);
+			legend(document.getElementById("chartLegend"), data);
 		}
 		function addTextResultHeader(){
 			var textResult = document.getElementById("textResult");
@@ -185,190 +188,6 @@
 			h2.innerHTML = " Eredmény ›";
 			p.appendChild(h2);
 			textResult.appendChild(p);
-		}
-
-		function getData(){
-
-		}
-		function submitMyScores(user_name){
-			var nKostolok = 7;
-			var nBorok = 0;
-			var tempArray = [];
-			tempArray[tempArray.length] = user_name;
-			for (i=1;i<nMaxSize;i++) {
-				var bor_score_i = document.getElementById('wine_score_'+i);
-				if (!bor_score_i){
-					break;
-				}
-				nBorok = i;
-
-				var bor_score_i_value = bor_score_i.value;
-				//  validate values here
-				if (isNaN(bor_score_i_value)){
-					alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (Számnak kell lennie, vagy üresen kell hagyni)")
-					return;
-				} else {
-					if (bor_score_i_value > 99999.999 ){
-						alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (túl nagy, kisebbnek kell lennie mint 99999.999)")
-					return;
-					}
-					var nDecPrec = getDecPrec(bor_score_i_value);
-					if (nDecPrec > 3){
-						alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (túl sok a decimálisjegy, maximum 3 tizedes jegy pontosság engedélyezett)")
-					return;
-					}
-				}
-				tempArray[tempArray.length] = bor_score_i_value.trim();
-			}
-			// nBorok--;
-
-			var response;
-			var xmlhttp=new XMLHttpRequest();
-			xmlhttp.onreadystatechange=function(){
-				if (xmlhttp.readyState==4 && xmlhttp.status==200){
-					response = xmlhttp.responseText;
-				} else {
-					return;
-				}
-			}
-			xmlhttp.open("POST","addWineScoresToDB.php?q="+JSON.stringify(tempArray),false);
-			xmlhttp.send();
-			// document.getElementById("result").innerHTML = response;
-			
-			var response;
-			var xmlhttp=new XMLHttpRequest();
-			xmlhttp.onreadystatechange=function(){
-				if (xmlhttp.readyState==4 && xmlhttp.status==200){
-					response = JSON.parse(xmlhttp.responseText);
-				} else {
-					return;
-				}
-			}
-			xmlhttp.open("POST","getWiredInScores.php",false);
-			xmlhttp.send();
-
-			for (var taster in response){
-				if (response.hasOwnProperty(taster)) {
-					tempArray[tempArray.length] = (taster+('. Kóstoló'));
-					for (var i=1; i <= nBorok; i++){
-						if (response[taster][i] == null){
-							tempArray[tempArray.length] = "";
-						} else {
-							tempArray[tempArray.length] = JSON.stringify(response[taster][i]);
-						}
-						
-					}
-				}
-			}
-			var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
-			returnArray.push.apply(returnArray, tempArray);
-
-			var xmlhttp=new XMLHttpRequest();
-			xmlhttp.onreadystatechange=function(){
-				if (xmlhttp.readyState==4 && xmlhttp.status==200){
-					
-					// document.getElementById("result").innerHTML = xmlhttp.responseText;
-					
-					var algoritmus = returnArray[2];
-					if (algoritmus == "hits"){
-						// alert(xmlhttp.responseText);
-						var data = JSON.parse(xmlhttp.responseText);
-						// let the users client calculate eigenvalues and vectors.
-						var B = numeric.eig(numeric.transpose(data.matrix));
-
-						var xmlhttpEIG=new XMLHttpRequest();
-						xmlhttpEIG.onreadystatechange=function(){
-							if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
-								// var response = JSON.parse(xmlhttpEIG.responseText);
-								var CoHITS = JSON.parse(xmlhttpEIG.responseText);
-
-								var tCorrelation = data.tCorrelation;
-								var tSumOfDiff = data.tSumOfDiff;
-
-								var bZeroCollerlationFound = false;
-								for (var i = 0; i < tCorrelation.length; i++) {
-									if (tCorrelation[i] == 0){
-										bZeroCollerlationFound = true;
-										break;
-									}
-								};
-								// norm to hundred
-								var max = Math.max.apply(null, CoHITS);
-								for (var i=0; i < CoHITS.length; i++){
-									CoHITS[i] = (CoHITS[i]/max*100);
-								}
-								// alert(max);
-								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
-								var graphData = [['Kóstoló', 'CoHITS']];
-								for (var i=0; i < CoHITS.length; i++){
-									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
-								}
-								// alert(graphData);
-								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								// if (bZeroCollerlationFound){
-								// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								// }
-								// alert(tCorrelation);;
-								clearResults();
-								addTextResultHeader();
-								drawChart(graphData);;
-								// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
-							}
-						}
-						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
-						xmlhttpEIG.send();
-					} else {
-						// alert(xmlhttp.responseText);
-						var response = JSON.parse(xmlhttp.responseText);
-						var array=[];
-						for(a in response){
-							array.push([a,response[a]])
-						}
-						array.sort(function(a,b){return a[1] - b[1]});
-						array.reverse();
-						// alert(array[0][0]);
-						clearResults();
-						addTextResultHeader();
-						
-						var tbl = document.createElement('table');
-						var thead = document.createElement('thead');
-						var trHead = document.createElement('tr');
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("#"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Név"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Értékelés"));
-						trHead.appendChild(th);
-						thead.appendChild(trHead);
-						tbl.appendChild(thead);
-
-						var nKostolok = array.length;
-						var tbdy=document.createElement('tbody');
-						for (i=0;i<nKostolok;i++){
-							var tr=document.createElement('tr');
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode((i+1)+"."));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][0]));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][1]));
-							tr.appendChild(td);
-							tbdy.appendChild(tr);
-						}
-						tbl.appendChild(tbdy);
-
-						document.getElementById("textResult").appendChild(tbl);
-					}
-				}
-			}
-			xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
-			xmlhttp.send();
-
 		}
 
 		function getMatrixData(){
@@ -397,8 +216,6 @@
 			}
 			var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
 			returnArray.push.apply(returnArray, tempArray);
-			// alert(returnArray);
-			document.getElementById("result").innerHTML = JSON.stringify(returnArray);
 
 			var xmlhttp=new XMLHttpRequest();
 			xmlhttp.onreadystatechange=function(){
@@ -598,10 +415,10 @@
 			<div id="sidebar">
 				<div id="container2">
 					<div class="blocklinks">
-						<?php include("login3/views/sideBarProfile.php"); ?>
 						<h3>Legfrisseb információk &rsaquo;</h3>
 						<a href="#" class="link">Az még nincs</a>
 						<a href="#" class="link">sajnos.</a>
+						<br />
 						<h3>Linkek &rsaquo;</h3>
 						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
 						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
@@ -610,117 +427,33 @@
 			</div>
 			<!--MAIN CONTENT-->
 			<div id="content">
-				<?php
-					if ($login->isUserLoggedIn() == true) {
-						// echo "logged in". $_SESSION['user_id'];
-						$db_connection = null;
-						function databaseConnection(){
-							global $db_connection;
-							// if connection already exists
-							if ($db_connection != null) {
-								return true;
-							} else {
-								try {
-									$db_connection = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-									return true;
-								} catch (PDOException $e) {
-									$errors[] = MESSAGE_DATABASE_ERROR . $e->getMessage();
-								}
-							}
-							return false;
-						}
-						databaseConnection();
-				echo "<h2> Demó &rsaquo;</h2>
+				<h2> Demó &rsaquo;</h2>
 				<p>
-<!-- 			<a href='#' id='test' onclick='test()'>Teszt adatok használata</a><br /> -->
-<!--				<a href='#' id='probaketto' onclick='probaketto()'>Teszt proba 2</a><br /> -->
-<!--				<a href='#' id='probaharom' onclick='probaharom()'>Teszt proba 3</a><br /> -->
-<!--				<br /> -->
-<!--				Kóstolók száma: -->
-<!--				<input type='text' id='kostolok' name='Kóstolók száma' class='headerInput' value=''><br /> -->
-<!--				Borok száma: -->
-<!--				<input type='text' id='borok' name='Borok száma' class='headerInput' value=''><br /> -->
+					<a href="#" id="test" onclick="test()">Teszt adatok használata</a><br />
+					<a href="#" id="probaketto" onclick="probaketto()">Teszt proba 2</a><br />
+					<a href="#" id="probaharom" onclick="probaharom()">Teszt proba 3</a><br />
+					<br />
+					Kóstolók száma:
+					<input type="text" id="kostolok" name="Kóstolók száma" class="headerInput" value=""><br />
+					Borok száma:
+					<input type="text" id="borok" name="Borok száma" class="headerInput" value=""><br />
 					Algoritmus:
-					<select id='algoritmus' name='Algoritmus'>
-						<option value='hits'>Co_HITS</option>
+					<select id="algoritmus" name="Algoritmus">
+						<option value="hits">Co_HITS</option>
 
-						<option value='hamming'>Hamming</option>
-						<option value='cosine'>Koszinusz</option>
-						<option value='precedence'>Precedencia</option>
-						<option value='adjacency'>Összefüggőségi</option>
-						<option value='positional'>Pozíció szerint</option>
-						<option value='sajat'>Saját</option>
+						<option value="hamming">Hamming</option>
+						<option value="cosine">Koszinusz</option>
+						<option value="precedence">Precedencia</option>
+						<option value="adjacency">Összefüggőségi</option>
+						<option value="positional">Pozíció szerint</option>
+						<option value="sajat">Saját</option>
 					</select>
 					<br />
-					<!-- <a href='#' id='matrixGenerator' onclick='addMatrix()'>Beviteli mezők generálása</a><br /> -->
+					<a href="#" id="matrixGenerator" onclick="addMatrix()">Beviteli mezők generálása</a><br />
+					<br />
 				</p>
-				<div class='topScrollingBlockWrapper'>
-					<div class='topScroll'><br /></div>
-				</div>
-				<div class='tableContainer'>
-					<div class='leftTableContainerForInput'>
-						<table class='leftTableForInput'>
-							<thead>
-								<tr>
-									<th>Sorszám</th>
-									<th>Bor</th>
-									<th>Pincészet</th>
-									<th></th>
-									<th>Évjárat</th>
-									<th>Összetétel</th>
-									<th>Ár</th>
-								</tr>
-							</thead>
-							<tbody>";
-
-						for($i=1; $i < 56; $i++){
-							$sth = $db_connection->prepare("SELECT * FROM wines where wine_id = $i");
-							$sth->execute();
-							$wine = $sth->fetch(PDO::FETCH_ASSOC);
-							echo "<tr><td>".$wine["wine_id"]."</td>"."<td>".$wine["wine_name"]."</td>"."<td>".$wine["wine_winery"]."</td>"."<td>".$wine["wine_location"]."</td>"."<td>".$wine["wine_year"]."</td>"."<td>".$wine["wine_composition"]."</td>"."<td>".$wine["wine_price"]."</td></tr>";
-						}
-						echo "
-							</tbody>
-						</table>
-					</div>
-					<div class='rightTableContainerForInput'>
-						<table class='rightTableWithInput'>
-							<thead>
-								<tr>
-									<th>Sorszám</th>
-									<th>Pont</th>
-								</tr>
-							</thead>
-							<tbody>";
-
-								$user_id = $_SESSION['user_id'];
-
-								for($i=1; $i < 56; $i++){
-									$sth = $db_connection->prepare("SELECT score FROM scores where wine_id = $i AND user_id = $user_id");
-									$sth->execute();
-									$tScore = $sth->fetch();
-									$nScore = "";
-									if (count($tScore)>1){
-										$nScore = $tScore["score"]+0;
-									}
-									echo "<tr><td>$i</td><td><input id='wine_score_$i' type='text' name='wine_score_$i' class='columnInput' value=$nScore></td></tr>";
-								}
-
-								$db_connection = null;
-							echo "
-							</tbody>
-						</table>
-					</div>
-				</div>";
-				$user_name = $_SESSION['user_name'];
-				echo "<p><a href='#' id='submit' onclick='submitMyScores(\"$user_name\")'>Elküld</a><br /></p>";
-
-					}else{
-						echo "<h2>A demo használatához be kell jelentkezni!</h2>";
-					}
-					?>
-				<!-- <div id="inputMatrix"></div> -->
-				<!-- <div id="submitMatrix"></div> -->
+				<div id="inputMatrix"></div>
+				<div id="submitMatrix"></div>
 				<div id="result">
 					<div id="textResult" class="textResult"></div>
 					<div id="graph" class="graph"></div>

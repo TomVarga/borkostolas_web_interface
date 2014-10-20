@@ -192,6 +192,14 @@ a {
 	font-size:10px;
 }
 
+.columnInput{
+	width: 50px;
+	height: 9px;
+	font-family: arial, monospace;
+	color: black;
+	font-size:9px;
+}
+
 #scrollingTable {
 	overflow: auto;
 }
@@ -288,6 +296,22 @@ table tr td, th{
 	margin-left: 5%;
 }
 
+.leftTableContainerForInput {
+	width: 80%;
+	float:left;
+	overflow-x: auto;
+}
+
+.rightTableContainerForInput {
+	width: 15%;
+	float: left;
+	margin-left: 5%;
+}
+
+.rightTableWithInput tr td{
+	padding: 1px;
+}
+
 /* side bar */
 
 #sidebar {
@@ -340,6 +364,40 @@ table tr td, th{
 	background: #525252;
 	border-top: 1px dotted #a0a0a0;
 }
+
+/*login stuff*/
+
+
+label {
+	padding-left: 0px;
+	font-size: 1.2em;
+	text-transform: uppercase;
+	margin-left: 15px;
+	letter-spacing:-1px;
+	margin-bottom: 10px;
+	color: #bb1f42;
+
+	position: relative;
+	vertical-align: middle;
+}
+input[type=user_name],
+input[type=password],
+input[type=submit],
+input[type=email] {
+	display: block;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+input[type=checkbox] {
+	margin-bottom: 8px;
+}
+
+form {
+	font-size: 0.8em;
+	line-height: 1.5em;
+	color: #8f8f8f;
+}
+
 
 /* footer */
 
