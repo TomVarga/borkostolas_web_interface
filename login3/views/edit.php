@@ -1,7 +1,7 @@
 <?php include('_header.php'); ?>
 
 <!-- clean separation of HTML and PHP -->
-<div>
+<div id="editProfile">
 <p>
 <?php echo $_SESSION['user_name']; ?>! <?php echo WORDING_EDIT_YOUR_CREDENTIALS; ?>
 <br />
@@ -10,7 +10,7 @@
 <!-- edit form for username / this form uses HTML5 attributes, like "required" and type="email" -->
 <form method="post" action="editProfile.html" name="user_edit_form_name">
 	<label for="user_name"><?php echo WORDING_NEW_USERNAME; ?></label>
-	<input id="user_name" type="user_name" name="user_name" pattern="[a-zA-Z0-9]{2,64}" required /> (<?php echo WORDING_CURRENTLY; ?>: <?php echo $_SESSION['user_name']; ?>)
+	<input id="user_name" type="text" name="user_name" pattern="[a-zA-Z0-9]{2,64}" required /> (<?php echo WORDING_CURRENTLY; ?>: <?php echo $_SESSION['user_name']; ?>)
 	<input type="submit" name="user_edit_submit_name" value="<?php echo WORDING_CHANGE_USERNAME; ?>" />
 </form><hr/>
 

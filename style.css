@@ -380,15 +380,26 @@ label {
 	position: relative;
 	vertical-align: middle;
 }
-input[type=user_name],
-input[type=password],
-input[type=submit],
-input[type=email] {
+/*input[type=text],*/
+#not_logged_in input{
 	display: block;
 	margin-top: 8px;
 	margin-bottom: 8px;
 }
-input[type=checkbox] {
+#not_logged_in input[type=checkbox] {
+	display: inline;
+	margin-bottom: 0px;
+}
+
+#register input{
+	display: block;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+#editProfile input{
+	display: block;
+	margin-top: 8px;
 	margin-bottom: 8px;
 }
 
