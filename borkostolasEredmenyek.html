@@ -28,16 +28,17 @@
 	<script type='text/javascript'>
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		google.setOnLoadCallback(drawChart);
+		google.setOnLoadCallback(drawChart2);
 		function drawChart() {
 			var graphData = [
-				['Kóstolók', 'CoHITS', 'Korreláció', 'Különbségek átlaga'],
-				["1. Kóstoló",0.150807820871,0.819838622814,0.89796775814],
-				["2. Kóstoló",0.14264075743 ,0.767161200075,0.715520880337],
-				["3. Kóstoló",0.140370653779,0.639048657415,0.896240519253],
-				["4. Kóstoló",0.135605804035,0.531053310191,0.599607230856],
-				["5. Kóstoló",0.136630841819,0.74315011031 ,0.800791717914],
-				["6. Kóstoló",0.147008065002,0.695260795848,1],
-				["7. Kóstoló",0.146936057064,0.61544368154 ,0.919458316967]
+				['Kóstolók', 'Korreláció', 'Különbségek átlaga'],
+				["1. Kóstoló",0.819838622814,0.89796775814],
+				["2. Kóstoló",0.767161200075,0.715520880337],
+				["3. Kóstoló",0.639048657415,0.896240519253],
+				["4. Kóstoló",0.531053310191,0.599607230856],
+				["5. Kóstoló",0.74315011031 ,0.800791717914],
+				["6. Kóstoló",0.695260795848,1],
+				["7. Kóstoló",0.61544368154 ,0.919458316967]
 			];
 
 			var data = google.visualization.arrayToDataTable(graphData);
@@ -103,6 +104,28 @@
 			// ctx.canvas.width  = document.getElementById("chartGraph").clientWidth;
 			// var myBarChart = new Chart(ctx).Bar(data, options);
 			// legend(document.getElementById("chartLegend"), data);
+		}
+		function drawChart2() {
+			var graphData = [
+				['Kóstolók', 'CoHITS'],
+				["1. Kóstoló",100],
+				["2. Kóstoló",94.5844563],
+				["3. Kóstoló",93.0791606],
+				["4. Kóstoló",89.91960977],
+				["5. Kóstoló",90.5993078],
+				["6. Kóstoló",97.48039866],
+				["7. Kóstoló",97.43265052]
+			];
+
+			var data = google.visualization.arrayToDataTable(graphData);
+
+			var options = {
+				// vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+			};
+
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.ColumnChart(document.getElementById("graph2"));
+			chart.draw(data, options);
 		}
 	</script>
 </head>
@@ -304,8 +327,9 @@
 						</table>
 					</div>
 				</div>
-				<div id='result'>
+				<div id='bugResult'>
 					<h2>Eredmények &rsaquo;</h2>
+					<div id="graph2"></div>
 					<div id="graph"></div>
 				</div>
 			</div>

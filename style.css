@@ -112,9 +112,14 @@ a {
 
 /* Main content (WHITE) area */
 
+#bigResult {
+	margin-top: 20px;
+	height: 415px;
+}
+
 #result {
 	margin-top: 20px;
-	height: 185px;
+	height: 215px;
 }
 
 #contentWrapper {
@@ -295,6 +300,8 @@ table tr td, th{
 	float: left;
 	margin-left: 5%;
 }
+
+.topScrollingBlockWrapperForInupt { width: 80%; overflow-x: auto; overflow-y: hidden; height: 20px;}
 
 .leftTableContainerForInput {
 	width: 80%;

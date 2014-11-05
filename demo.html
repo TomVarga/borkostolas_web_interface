@@ -10,7 +10,21 @@
 		<!-- <script type="text/javascript" src="Chart.min.js"></script> -->
 		<!-- <script type="text/javascript" src="Legend.js"></script> -->
 		<script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script type='text/javascript'>
+		$(function () {
+			$('.topScrollingBlockWrapperForInupt').on('scroll', function (e) {
+				$('.leftTableContainerForInput').scrollLeft($('.topScrollingBlockWrapperForInupt').scrollLeft());
+			});
+			$('.leftTableContainerForInput').on('scroll', function (e) {
+				$('.topScrollingBlockWrapperForInupt').scrollLeft($('.leftTableContainerForInput').scrollLeft());
+			});
+		});
+		$(window).on('load', function (e) {
+			$('.topScroll').width($('.leftTableForInput').width());
+		});
+		</script>
+		<script type="text/javascript">
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		// google.setOnLoadCallback(drawChart);
 		var nMaxSize = 10000;
@@ -654,7 +668,7 @@
 					<br />
 					<!-- <a href='#' id='matrixGenerator' onclick='addMatrix()'>Beviteli mezők generálása</a><br /> -->
 				</p>
-				<div class='topScrollingBlockWrapper'>
+				<div class='topScrollingBlockWrapperForInupt'>
 					<div class='topScroll'><br /></div>
 				</div>
 				<div class='tableContainer'>
