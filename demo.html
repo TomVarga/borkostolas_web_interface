@@ -28,6 +28,22 @@
 		google.load('visualization', '1.0', {'packages':['corechart']});
 		// google.setOnLoadCallback(drawChart);
 		var nMaxSize = 10000;
+		var algoritmusok = [
+			["hits", "CoHITS"],
+			["hamming", "Hamming"],
+			["cosine", "Koszinusz"],
+			["precedence", "Precedencia"],
+			["adjacency", "Összefüggőségi"],
+			["positional", "Pozíció szerint"]
+		];
+		function getAlgoritmusName(algoritmus){
+			for (i = 0; i< algoritmusok.length; i++){
+				if ( algoritmusok[i][0] == algoritmus ){
+					return algoritmusok[i][1];
+				}
+			}
+			return "Ismeretlen";
+		}
 		function getDecPrec(num) {
 			return (num.split('.')[1] || []).length;
 		}
@@ -50,12 +66,21 @@
 			while (graph.hasChildNodes()) {
 				graph.removeChild(graph.lastChild);
 			}
+			var graph = document.getElementById("graph2");
+			while (graph.hasChildNodes()) {
+				graph.removeChild(graph.lastChild);
+			}
 
 			// clear textResults
 			var textResult = document.getElementById("textResult");
 			while (textResult.hasChildNodes()) {
 				textResult.removeChild(textResult.lastChild);
 			}
+			var textResult = document.getElementById("textResult2");
+			while (textResult.hasChildNodes()) {
+				textResult.removeChild(textResult.lastChild);
+			}
+
 		}
 		function addMatrix(){
 			var Kostolok = document.getElementById("kostolok");
@@ -145,7 +170,31 @@
 			}
 			submitMatrix.appendChild(p);
 		}
-		function drawChart(graphData){
+		function drawChart(graphData, graphData2) {
+			// alert(graphData);
+			// alert(graphData2[1]);
+			graphData[1] = graphData2[1];
+
+			var data = google.visualization.arrayToDataTable(graphData);
+
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1,
+				{ calc: "stringify",
+				sourceColumn: 1,
+				type: "string",
+				role: "annotation" }
+				]);
+			var options = {
+			};
+
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.BarChart(document.getElementById("graph"));
+			chart.draw(view, options);
+
+			// var chart = new google.visualization.BarChart(document.getElementById('graph'));
+			// chart.draw(data, options);
+		}
+		function drawChart2(graphData){
 			// alert(JSON.stringify(graphData));
 			// google.load('visualization', '1.0', {'packages':['corechart']});
 
@@ -181,11 +230,10 @@
 				role: "annotation" }
 				]);
 			var options = {
-				// vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
 			};
 
 			// Instantiate and draw our chart, passing in some options.
-			var chart = new google.visualization.BarChart(document.getElementById("graph"));
+			var chart = new google.visualization.BarChart(document.getElementById("graph2"));
 			chart.draw(view, options);
 
 			// var chart = new google.visualization.BarChart(document.getElementById('graph'));
@@ -200,9 +248,247 @@
 			p.appendChild(h2);
 			textResult.appendChild(p);
 		}
+		function addTextResult2Header(){
+			var textResult = document.getElementById("textResult2");
+			var p = document.createElement('p');
+			var h2 = document.createElement('h2');
+			h2.innerHTML = " Csak az általad értékeltek alapján ›";
+			p.appendChild(h2);
+			textResult.appendChild(p);
+		}
+		function getData2(returnArray, graphData2){
+			var xmlhttp=new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function(){
+				if (xmlhttp.readyState==4 && xmlhttp.status==200){
+					
+					// document.getElementById("result").innerHTML = xmlhttp.responseText;
+					
+					var algoritmus = returnArray[2];
+					if (algoritmus == "hits"){
+						// alert(xmlhttp.responseText);
+						var data = JSON.parse(xmlhttp.responseText);
+						// let the users client calculate eigenvalues and vectors.
+						var B = numeric.eig(numeric.transpose(data.matrix));
 
-		function getData(){
+						var xmlhttpEIG=new XMLHttpRequest();
+						xmlhttpEIG.onreadystatechange=function(){
+							if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
+								// var response = JSON.parse(xmlhttpEIG.responseText);
+								var CoHITS = JSON.parse(xmlhttpEIG.responseText);
 
+								var tCorrelation = data.tCorrelation;
+								var tSumOfDiff = data.tSumOfDiff;
+
+								var bZeroCollerlationFound = false;
+								for (var i = 0; i < tCorrelation.length; i++) {
+									if (tCorrelation[i] == 0){
+										bZeroCollerlationFound = true;
+										break;
+									}
+								};
+								// norm to hundred
+								var max = Math.max.apply(null, CoHITS);
+								for (var i=0; i < CoHITS.length; i++){
+									CoHITS[i] = (CoHITS[i]/max*100);
+								}
+								// alert(max);
+								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
+								var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
+								for (var i=0; i < CoHITS.length; i++){
+									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
+								}
+								// alert(graphData);
+								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+								// if (bZeroCollerlationFound){
+								// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+								// }
+								// alert(tCorrelation);;
+								clearResults();
+								addTextResultHeader();
+								drawChart2(graphData);
+								addTextResult2Header();
+								drawChart(graphData2, graphData);
+
+								// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
+							}
+						}
+						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+						xmlhttpEIG.send();
+					} else {
+						// alert(xmlhttp.responseText);
+						var response = JSON.parse(xmlhttp.responseText);
+						var array=[];
+						for(a in response){
+							array.push([a,response[a]])
+						}
+						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
+						for (var i=0; i < array.length; i++){
+							graphData[graphData.length] = [array[i][0],array[i][1]];
+						}
+						clearResults();
+						addTextResultHeader();
+						drawChart2(graphData);
+						addTextResult2Header();
+						drawChart(graphData2, graphData);
+						// array.sort(function(a,b){return a[1] - b[1]});
+						// array.reverse();
+						// // alert(array[0][0]);
+						// clearResults();
+						// addTextResultHeader();
+						
+						// var tbl = document.createElement('table');
+						// var thead = document.createElement('thead');
+						// var trHead = document.createElement('tr');
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("#"));
+						// trHead.appendChild(th);
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("Név"));
+						// trHead.appendChild(th);
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("Értékelés"));
+						// trHead.appendChild(th);
+						// thead.appendChild(trHead);
+						// tbl.appendChild(thead);
+
+						// var nKostolok = array.length;
+						// var tbdy=document.createElement('tbody');
+						// for (i=0;i<nKostolok;i++){
+						// 	var tr=document.createElement('tr');
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode((i+1)+"."));
+						// 	tr.appendChild(td);
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode(array[i][0]));
+						// 	tr.appendChild(td);
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode(array[i][1]));
+						// 	tr.appendChild(td);
+						// 	tbdy.appendChild(tr);
+						// }
+						// tbl.appendChild(tbdy);
+
+						// document.getElementById("textResult").appendChild(tbl);
+					}
+				}
+			}
+			xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
+			xmlhttp.send();
+		}
+		function getData(returnArray, returnArray2){
+			var xmlhttp=new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function(){
+				if (xmlhttp.readyState==4 && xmlhttp.status==200){
+					
+					// document.getElementById("result").innerHTML = xmlhttp.responseText;
+					
+					var algoritmus = returnArray[2];
+					if (algoritmus == "hits"){
+						// alert(xmlhttp.responseText);
+						var data = JSON.parse(xmlhttp.responseText);
+						// let the users client calculate eigenvalues and vectors.
+						var B = numeric.eig(numeric.transpose(data.matrix));
+
+						var xmlhttpEIG=new XMLHttpRequest();
+						xmlhttpEIG.onreadystatechange=function(){
+							if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
+								// var response = JSON.parse(xmlhttpEIG.responseText);
+								var CoHITS = JSON.parse(xmlhttpEIG.responseText);
+
+								var tCorrelation = data.tCorrelation;
+								var tSumOfDiff = data.tSumOfDiff;
+
+								var bZeroCollerlationFound = false;
+								for (var i = 0; i < tCorrelation.length; i++) {
+									if (tCorrelation[i] == 0){
+										bZeroCollerlationFound = true;
+										break;
+									}
+								};
+								// norm to hundred
+								var max = Math.max.apply(null, CoHITS);
+								for (var i=0; i < CoHITS.length; i++){
+									CoHITS[i] = (CoHITS[i]/max*100);
+								}
+								// alert(max);
+								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
+								var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
+								for (var i=0; i < CoHITS.length; i++){
+									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
+								}
+								// alert(graphData);
+								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+								// if (bZeroCollerlationFound){
+								// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+								// }
+								// alert(tCorrelation);;
+								// clearResults();
+								// addTextResultHeader();
+								// drawChart2(graphData);
+								// addTextResult2Header();
+								// drawChart(graphData[1]);
+								getData2(returnArray2, graphData);
+								// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
+							}
+						}
+						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+						xmlhttpEIG.send();
+					} else {
+						// alert(xmlhttp.responseText);
+						var response = JSON.parse(xmlhttp.responseText);
+						var array=[];
+						for(a in response){
+							array.push([a,response[a]])
+						}
+						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
+						for (var i=0; i < array.length; i++){
+							graphData[graphData.length] = [array[i][0],array[i][1]];
+						}
+						getData2(returnArray2, graphData);
+						// array.sort(function(a,b){return a[1] - b[1]});
+						// array.reverse();
+						// // alert(array[0][0]);
+						// clearResults();
+						// addTextResultHeader();
+						
+						// var tbl = document.createElement('table');
+						// var thead = document.createElement('thead');
+						// var trHead = document.createElement('tr');
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("#"));
+						// trHead.appendChild(th);
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("Név"));
+						// trHead.appendChild(th);
+						// var th = document.createElement("th");
+						// th.appendChild(document.createTextNode("Értékelés"));
+						// trHead.appendChild(th);
+						// thead.appendChild(trHead);
+						// tbl.appendChild(thead);
+
+						// var nKostolok = array.length;
+						// var tbdy=document.createElement('tbody');
+						// for (i=0;i<nKostolok;i++){
+						// 	var tr=document.createElement('tr');
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode((i+1)+"."));
+						// 	tr.appendChild(td);
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode(array[i][0]));
+						// 	tr.appendChild(td);
+						// 	var td=document.createElement('td');
+						// 	td.appendChild(document.createTextNode(array[i][1]));
+						// 	tr.appendChild(td);
+						// 	tbdy.appendChild(tr);
+						// }
+						// tbl.appendChild(tbdy);
+
+						// document.getElementById("textResult").appendChild(tbl);
+					}
+				}
+			}
+			xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
+			xmlhttp.send();
 		}
 		function submitMyScores(user_name){
 			var nKostolok = 7;
@@ -261,254 +547,172 @@
 			xmlhttp.open("POST","getWiredInScores.php",false);
 			xmlhttp.send();
 
+			var nTastedBorokBySelf = 0;
+			var tempArray3 = [];
+			for (i=0; i < tempArray.length;i++){
+				if (tempArray[i] != ""){
+					tempArray3[tempArray3.length] = tempArray[i];
+					nTastedBorokBySelf++;
+				}
+			}
+			nTastedBorokBySelf--;
+
+			var tempArray2 = [];
 			for (var taster in response){
 				if (response.hasOwnProperty(taster)) {
+					tempArray2[tempArray2.length] = (taster+('. Kóstoló'));
 					tempArray[tempArray.length] = (taster+('. Kóstoló'));
 					for (var i=1; i <= nBorok; i++){
 						if (response[taster][i] == null){
+							if (tempArray[i] != ""){
+								tempArray2[tempArray2.length] = "";
+							}
 							tempArray[tempArray.length] = "";
 						} else {
+							if (tempArray[i] != ""){
+								tempArray2[tempArray2.length] = JSON.stringify(response[taster][i]);
+							}
 							tempArray[tempArray.length] = JSON.stringify(response[taster][i]);
 						}
-						
 					}
 				}
 			}
+			// alert(tempArray);
 			var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
-			returnArray.push.apply(returnArray, tempArray);
+			var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, document.getElementById('algoritmus').value ];
+			returnArray2.push.apply(returnArray2, tempArray3);
+			returnArray2.push.apply(returnArray2, tempArray2);
+			returnArray.push.apply(returnArray, tempArray); // teljes adatsor
+			// alert(returnArray2);
+			getData(returnArray, returnArray2);
 
-			var xmlhttp=new XMLHttpRequest();
-			xmlhttp.onreadystatechange=function(){
-				if (xmlhttp.readyState==4 && xmlhttp.status==200){
-					
-					// document.getElementById("result").innerHTML = xmlhttp.responseText;
-					
-					var algoritmus = returnArray[2];
-					if (algoritmus == "hits"){
-						// alert(xmlhttp.responseText);
-						var data = JSON.parse(xmlhttp.responseText);
-						// let the users client calculate eigenvalues and vectors.
-						var B = numeric.eig(numeric.transpose(data.matrix));
-
-						var xmlhttpEIG=new XMLHttpRequest();
-						xmlhttpEIG.onreadystatechange=function(){
-							if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
-								// var response = JSON.parse(xmlhttpEIG.responseText);
-								var CoHITS = JSON.parse(xmlhttpEIG.responseText);
-
-								var tCorrelation = data.tCorrelation;
-								var tSumOfDiff = data.tSumOfDiff;
-
-								var bZeroCollerlationFound = false;
-								for (var i = 0; i < tCorrelation.length; i++) {
-									if (tCorrelation[i] == 0){
-										bZeroCollerlationFound = true;
-										break;
-									}
-								};
-								// norm to hundred
-								var max = Math.max.apply(null, CoHITS);
-								for (var i=0; i < CoHITS.length; i++){
-									CoHITS[i] = (CoHITS[i]/max*100);
-								}
-								// alert(max);
-								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
-								var graphData = [['Kóstoló', 'CoHITS']];
-								for (var i=0; i < CoHITS.length; i++){
-									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
-								}
-								// alert(graphData);
-								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								// if (bZeroCollerlationFound){
-								// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								// }
-								// alert(tCorrelation);;
-								clearResults();
-								addTextResultHeader();
-								drawChart(graphData);;
-								// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
-							}
-						}
-						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
-						xmlhttpEIG.send();
-					} else {
-						// alert(xmlhttp.responseText);
-						var response = JSON.parse(xmlhttp.responseText);
-						var array=[];
-						for(a in response){
-							array.push([a,response[a]])
-						}
-						array.sort(function(a,b){return a[1] - b[1]});
-						array.reverse();
-						// alert(array[0][0]);
-						clearResults();
-						addTextResultHeader();
-						
-						var tbl = document.createElement('table');
-						var thead = document.createElement('thead');
-						var trHead = document.createElement('tr');
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("#"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Név"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Értékelés"));
-						trHead.appendChild(th);
-						thead.appendChild(trHead);
-						tbl.appendChild(thead);
-
-						var nKostolok = array.length;
-						var tbdy=document.createElement('tbody');
-						for (i=0;i<nKostolok;i++){
-							var tr=document.createElement('tr');
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode((i+1)+"."));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][0]));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][1]));
-							tr.appendChild(td);
-							tbdy.appendChild(tr);
-						}
-						tbl.appendChild(tbdy);
-
-						document.getElementById("textResult").appendChild(tbl);
-					}
-				}
-			}
-			xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
-			xmlhttp.send();
 
 		}
 
-		function getMatrixData(){
-			var nKostolok = 0;
-			var nBorok = 0;
-			var tempArray = [];
-			for (j=0;j<nMaxSize;j++) {
-				for (i=0;i<nMaxSize;i++) {
-					var ij = document.getElementById(i+":"+j);
-					if (!ij){
-						break;
-					}
-					nKostolok = j;
-					nBorok = i;
-					var ijValue = ij.value;
-					//  validate values here
-					if (i==0 && isEmpty(ijValue)){
-						alert("Az " + (i+1) + ". kóstolót nem nevezte el!")
-						return;
-					}else if (i>0 && isNaN(ijValue)){
-						alert("Az " + (j+1) + ". kóstoló által értékelt " + i + ". bor pontszáma nem megfelelő formátumú! (Számnak kell lennie, vagy üresen kell hagyni)")
-						return;
-					}
-					tempArray[tempArray.length] = ijValue.trim();
-				}
-			}
-			var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
-			returnArray.push.apply(returnArray, tempArray);
-			// alert(returnArray);
-			document.getElementById("result").innerHTML = JSON.stringify(returnArray);
+		// function getMatrixData(){
+		// 	var nKostolok = 0;
+		// 	var nBorok = 0;
+		// 	var tempArray = [];
+		// 	for (j=0;j<nMaxSize;j++) {
+		// 		for (i=0;i<nMaxSize;i++) {
+		// 			var ij = document.getElementById(i+":"+j);
+		// 			if (!ij){
+		// 				break;
+		// 			}
+		// 			nKostolok = j;
+		// 			nBorok = i;
+		// 			var ijValue = ij.value;
+		// 			//  validate values here
+		// 			if (i==0 && isEmpty(ijValue)){
+		// 				alert("Az " + (i+1) + ". kóstolót nem nevezte el!")
+		// 				return;
+		// 			}else if (i>0 && isNaN(ijValue)){
+		// 				alert("Az " + (j+1) + ". kóstoló által értékelt " + i + ". bor pontszáma nem megfelelő formátumú! (Számnak kell lennie, vagy üresen kell hagyni)")
+		// 				return;
+		// 			}
+		// 			tempArray[tempArray.length] = ijValue.trim();
+		// 		}
+		// 	}
+		// 	var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
+		// 	returnArray.push.apply(returnArray, tempArray);
+		// 	// alert(returnArray);
+		// 	document.getElementById("result").innerHTML = JSON.stringify(returnArray);
 
-			var xmlhttp=new XMLHttpRequest();
-			xmlhttp.onreadystatechange=function(){
-				if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		// 	var xmlhttp=new XMLHttpRequest();
+		// 	xmlhttp.onreadystatechange=function(){
+		// 		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 					
-					// document.getElementById("result").innerHTML = xmlhttp.responseText;
+		// 			// document.getElementById("result").innerHTML = xmlhttp.responseText;
 					
-					var algoritmus = returnArray[2];
-					if (algoritmus == "hits"){
-						// alert(xmlhttp.responseText);
-						var data = JSON.parse(xmlhttp.responseText);
-						// let the users client calculate eigenvalues and vectors.
-						var B = numeric.eig(numeric.transpose(data.matrix));
+		// 			var algoritmus = returnArray[2];
+		// 			if (algoritmus == "hits"){
+		// 				// alert(xmlhttp.responseText);
+		// 				var data = JSON.parse(xmlhttp.responseText);
+		// 				// let the users client calculate eigenvalues and vectors.
+		// 				var B = numeric.eig(numeric.transpose(data.matrix));
 
-						var xmlhttpEIG=new XMLHttpRequest();
-						xmlhttpEIG.onreadystatechange=function(){
-							if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
-								// var response = JSON.parse(xmlhttpEIG.responseText);
-								var CoHITS = JSON.parse(xmlhttpEIG.responseText);
+		// 				var xmlhttpEIG=new XMLHttpRequest();
+		// 				xmlhttpEIG.onreadystatechange=function(){
+		// 					if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
+		// 						// var response = JSON.parse(xmlhttpEIG.responseText);
+		// 						var CoHITS = JSON.parse(xmlhttpEIG.responseText);
 
-								var tCorrelation = data.tCorrelation;
-								var tSumOfDiff = data.tSumOfDiff;
+		// 						var tCorrelation = data.tCorrelation;
+		// 						var tSumOfDiff = data.tSumOfDiff;
 
-								var bZeroCollerlationFound = false;
-								for (var i = 0; i < tCorrelation.length; i++) {
-									if (tCorrelation[i] == 0){
-										bZeroCollerlationFound = true;
-										break;
-									}
-								};
-								var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								if (bZeroCollerlationFound){
-									graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
-								}
-								// alert(tCorrelation);;
-								clearResults();
-								addTextResultHeader();
-								drawChart(graphData);;
-								// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
-							}
-						}
-						xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
-						xmlhttpEIG.send();
-					} else {
-						// alert(xmlhttp.responseText);
-						var response = JSON.parse(xmlhttp.responseText);
-						var array=[];
-						for(a in response){
-							array.push([a,response[a]])
-						}
-						array.sort(function(a,b){return a[1] - b[1]});
-						array.reverse();
-						// alert(array[0][0]);
-						clearResults();
-						addTextResultHeader();
+		// 						var bZeroCollerlationFound = false;
+		// 						for (var i = 0; i < tCorrelation.length; i++) {
+		// 							if (tCorrelation[i] == 0){
+		// 								bZeroCollerlationFound = true;
+		// 								break;
+		// 							}
+		// 						};
+		// 						var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+		// 						if (bZeroCollerlationFound){
+		// 							graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
+		// 						}
+		// 						// alert(tCorrelation);;
+		// 						clearResults();
+		// 						addTextResultHeader();
+		// 						drawChart(graphData);;
+		// 						// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
+		// 					}
+		// 				}
+		// 				xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+		// 				xmlhttpEIG.send();
+		// 			} else {
+		// 				// alert(xmlhttp.responseText);
+		// 				var response = JSON.parse(xmlhttp.responseText);
+		// 				var array=[];
+		// 				for(a in response){
+		// 					array.push([a,response[a]])
+		// 				}
+		// 				array.sort(function(a,b){return a[1] - b[1]});
+		// 				array.reverse();
+		// 				// alert(array[0][0]);
+		// 				clearResults();
+		// 				addTextResultHeader();
 						
-						var tbl = document.createElement('table');
-						var thead = document.createElement('thead');
-						var trHead = document.createElement('tr');
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("#"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Név"));
-						trHead.appendChild(th);
-						var th = document.createElement("th");
-						th.appendChild(document.createTextNode("Értékelés"));
-						trHead.appendChild(th);
-						thead.appendChild(trHead);
-						tbl.appendChild(thead);
+		// 				var tbl = document.createElement('table');
+		// 				var thead = document.createElement('thead');
+		// 				var trHead = document.createElement('tr');
+		// 				var th = document.createElement("th");
+		// 				th.appendChild(document.createTextNode("#"));
+		// 				trHead.appendChild(th);
+		// 				var th = document.createElement("th");
+		// 				th.appendChild(document.createTextNode("Név"));
+		// 				trHead.appendChild(th);
+		// 				var th = document.createElement("th");
+		// 				th.appendChild(document.createTextNode("Értékelés"));
+		// 				trHead.appendChild(th);
+		// 				thead.appendChild(trHead);
+		// 				tbl.appendChild(thead);
 
-						var nKostolok = array.length;
-						var tbdy=document.createElement('tbody');
-						for (i=0;i<nKostolok;i++){
-							var tr=document.createElement('tr');
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode((i+1)+"."));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][0]));
-							tr.appendChild(td);
-							var td=document.createElement('td');
-							td.appendChild(document.createTextNode(array[i][1]));
-							tr.appendChild(td);
-							tbdy.appendChild(tr);
-						}
-						tbl.appendChild(tbdy);
+		// 				var nKostolok = array.length;
+		// 				var tbdy=document.createElement('tbody');
+		// 				for (i=0;i<nKostolok;i++){
+		// 					var tr=document.createElement('tr');
+		// 					var td=document.createElement('td');
+		// 					td.appendChild(document.createTextNode((i+1)+"."));
+		// 					tr.appendChild(td);
+		// 					var td=document.createElement('td');
+		// 					td.appendChild(document.createTextNode(array[i][0]));
+		// 					tr.appendChild(td);
+		// 					var td=document.createElement('td');
+		// 					td.appendChild(document.createTextNode(array[i][1]));
+		// 					tr.appendChild(td);
+		// 					tbdy.appendChild(tr);
+		// 				}
+		// 				tbl.appendChild(tbdy);
 
-						document.getElementById("textResult").appendChild(tbl);
-					}
-				}
-			}
-			xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
-			xmlhttp.send();
+		// 				document.getElementById("textResult").appendChild(tbl);
+		// 			}
+		// 		}
+		// 	}
+		// 	xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
+		// 	xmlhttp.send();
 
-		}
+		// }
 		function test(){
 			var nKostolok = 7;
 			var nBorok = 55;
@@ -663,7 +867,7 @@
 						<option value='precedence'>Precedencia</option>
 						<option value='adjacency'>Összefüggőségi</option>
 						<option value='positional'>Pozíció szerint</option>
-						<option value='sajat'>Saját</option>
+						<!--<option value='sajat'>Saját</option>-->
 					</select>
 					<br />
 					<!-- <a href='#' id='matrixGenerator' onclick='addMatrix()'>Beviteli mezők generálása</a><br /> -->
@@ -738,6 +942,8 @@
 				<div id="result">
 					<div id="textResult" class="textResult"></div>
 					<div id="graph" class="graph"></div>
+					<div id="textResult2" class="textResult"></div>
+					<div id="graph2" class="graph"></div>
 				</div>
 			</div>
 		</div>

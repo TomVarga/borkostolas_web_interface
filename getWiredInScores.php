@@ -77,9 +77,9 @@ $errors = array();
  	}
  	// print_r($results);
 
-	$sth = $db_connection->prepare("SELECT score FROM scores where wine_id = 2 and user_id = 3");
-	$sth->execute();
-	$result = $sth->fetch();
+	// $sth = $db_connection->prepare("SELECT score FROM scores where wine_id = 2 and user_id = 3");
+	// $sth->execute();
+	// $result = $sth->fetch();
 	// print_r($result);
 	// print_r(count($result));
 

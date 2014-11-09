@@ -89,7 +89,7 @@
 						<option value="precedence">Precedencia</option>
 						<option value="adjacency">Összefüggőségi</option>
 						<option value="positional">Pozíció szerint</option>
-						<option value="sajat">Saját</option>
+<!-- 						<option value="sajat">Saját alpha</option> -->
 					</select>
 					<br />
 					<a href="#" id="matrixGenerator" onclick="addMatrix()">Beviteli mezők generálása</a><br />
