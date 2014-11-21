@@ -295,7 +295,7 @@
 								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
 								var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 								for (var i=0; i < CoHITS.length; i++){
-									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
+									graphData[graphData.length] = [data.tOrderOfTasters[i],+CoHITS[i].toFixed(3)];
 								}
 								// alert(graphData);
 								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
@@ -323,7 +323,7 @@
 						}
 						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 						for (var i=0; i < array.length; i++){
-							graphData[graphData.length] = [array[i][0],array[i][1]];
+							graphData[graphData.length] = [array[i][0],+array[i][1].toFixed(3)];
 						}
 						clearResults();
 						addTextResultHeader();
@@ -414,7 +414,7 @@
 								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
 								var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 								for (var i=0; i < CoHITS.length; i++){
-									graphData[graphData.length] = [data.tOrderOfTasters[i],CoHITS[i]];
+									graphData[graphData.length] = [data.tOrderOfTasters[i],+CoHITS[i].toFixed(3)];
 								}
 								// alert(graphData);
 								// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Korreláció', data: tCorrelation}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
@@ -442,7 +442,7 @@
 						}
 						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 						for (var i=0; i < array.length; i++){
-							graphData[graphData.length] = [array[i][0],array[i][1]];
+							graphData[graphData.length] = [array[i][0],+array[i][1].toFixed(3)];
 						}
 						getData2(returnArray2, graphData);
 						// array.sort(function(a,b){return a[1] - b[1]});
