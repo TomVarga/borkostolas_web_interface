@@ -528,6 +528,7 @@
 				if (xmlhttp.readyState==4 && xmlhttp.status==200){
 					response = xmlhttp.responseText;
 				} else {
+					
 					return;
 				}
 			}
@@ -818,8 +819,7 @@
 					<div class="blocklinks">
 						<?php include("login3/views/sideBarProfile.php"); ?>
 						<h3>Legfrisseb információk &rsaquo;</h3>
-						<a href="#" class="link">Az még nincs</a>
-						<a href="#" class="link">sajnos.</a>
+						<a href="http://bor.tvarga.hu/borkostolas.apk" class="link" target="_blank">Android alkalmazás</a>
 						<h3>Linkek &rsaquo;</h3>
 						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
 						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
@@ -919,7 +919,11 @@
 									$tScore = $sth->fetch();
 									$nScore = "";
 									if (count($tScore)>1){
-										$nScore = $tScore["score"]+0;
+										if ($tScore["score"] == null){
+											$nScore = "";
+										}else{
+											$nScore = $tScore["score"]+0;
+										}
 									}
 									echo "<tr><td>$i</td><td><input id='wine_score_$i' type='text' name='wine_score_$i' class='columnInput' value=$nScore></td></tr>";
 								}

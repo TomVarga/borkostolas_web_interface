@@ -3,7 +3,7 @@
 	$array = json_decode($str);
 
 
-
+	// print_r($array);
 	// $array = ["tom","","13","","","","","","","","","","","","","","","","","","","10","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
 
 
@@ -35,11 +35,12 @@
 				return false;
 			}
 
-// aasd;
+// // aasd;
 			databaseConnection();
 
 			$user_name = $array[0];
-			// $user_name = "asdf";
+// 			// $user_name = "asdf";
+			// print_r($array);
 
 			$sth = $db_connection->prepare('SELECT user_id FROM users WHERE user_name = :user_name');
 			$sth->bindValue(':user_name', $user_name, PDO::PARAM_STR);
@@ -64,14 +65,19 @@
 							$sth->bindValue(':score', $score, PDO::PARAM_STR);
 							$sth->execute();
 						}else{
-							$sth = $db_connection->prepare('DELETE FROM scores WHERE user_id = :user_id and wine_id = :wine_id');
+							$sth = $db_connection->prepare('UPDATE scores SET score = null WHERE user_id = :user_id and wine_id = :wine_id');
 							$sth->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 							$sth->bindValue(':wine_id', $wine_id, PDO::PARAM_STR);
+							// $sth->bindValue(':score', null, PDO::PARAM_STR);
 							$sth->execute();
+							// $sth = $db_connection->prepare('DELETE FROM scores WHERE user_id = :user_id and wine_id = :wine_id');
+							// $sth->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+							// $sth->bindValue(':wine_id', $wine_id, PDO::PARAM_STR);
+							// $sth->execute();
 						}
 					} else { // no data found just insert
 						if (is_numeric($score)){
-							$sth = $db_connection->prepare('INSERT INTO scores VALUES (:user_id, :wine_id, :score)');
+							$sth = $db_connection->prepare('INSERT INTO scores VALUES (:user_id, :wine_id, :score, null)');
 							$sth->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 							$sth->bindValue(':wine_id', $wine_id, PDO::PARAM_STR);
 							$sth->bindValue(':score', $score, PDO::PARAM_STR);
@@ -85,6 +91,8 @@
 			// print_r($array[56]);
 			$db_connection = null;
 
-			
+			print_r("Success");
+	}else{
+		print_r("not logged in");
 	}
 ?>

@@ -176,6 +176,28 @@ class Login
         }
     }
 
+    private function m_getUserId()
+    {
+        // if database connection opened
+        if ($this->databaseConnection()) {
+            // database query, getting all the info of the selected user
+            $query_user = $this->db_connection->prepare('SELECT user_id FROM users WHERE user_name = :user_name');
+            $user_name = "";
+            if ($_SESSION['user_name'] != null){
+                $user_name = $_SESSION['user_name'];
+            }else{
+                $user_name = $_POST["user_name"];
+            }
+            
+            $query_user->bindValue(':user_name', $user_name, PDO::PARAM_STR);
+            $query_user->execute();
+            // get result row (as an object)
+            return $query_user->fetchObject();
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Logs in with S_SESSION data.
      * Technically we are already logged in at that point of time, as the $_SESSION values already exist.
@@ -742,6 +764,15 @@ class Login
     public function getUsername()
     {
         return $this->user_name;
+    }
+
+    /**
+     * Gets the userid
+     * @return int userid
+     */
+    public function getUserId()
+    {
+        return $this->m_getUserId();
     }
 
     /**
