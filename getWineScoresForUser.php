@@ -2,6 +2,7 @@
 include_once('login3/config/config.php');
 
 $user_id = $_POST['user_id'];
+
 // $user_id = "3";
 $db_connection = null;
 $errors = array();
