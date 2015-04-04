@@ -1,13 +1,8 @@
 <?php
 	$str=$_REQUEST["q"];
 	$array = json_decode($str);
-
-
 	// print_r($array);
 	// $array = ["tom","","13","","","","","","","","","","","","","","","","","","","10","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
-
-
-
 	require_once('login3/config/config.php');
 	require_once('login3/translations/hu.php');
 	require_once('login3/libraries/PHPMailer.php');
@@ -35,7 +30,6 @@
 				return false;
 			}
 
-// // aasd;
 			databaseConnection();
 
 			$user_name = $array[0];
