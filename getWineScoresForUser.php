@@ -1,26 +1,29 @@
 <?php
-include_once('login3/config/config.php');
+include_once('services/dbUtils.php');
 
-$user_id = $_POST['user_id'];
+$user_id = $_REQUEST['user_id'];
+$user_id = preg_replace( "/[^0-9]/", "", $user_id);
+$user_name = $_REQUEST['user_name'];
 
 // $user_id = "3";
 $db_connection = null;
 $errors = array();
 
-	function databaseConnection(){
+	function getScoresByUserName($user_name){
 		global $db_connection;
-		// if connection already exists
-		if ($db_connection != null) {
-			return true;
+		global $user_id;
+		$user_id = getUserId($user_name);
+		// if database connection opened
+		if (databaseConnection()) {
+			// database query, getting all the info of the selected user
+			$query_score = $db_connection->prepare('SELECT * FROM scores WHERE user_id = :user_id');
+			$query_score->bindValue(':user_id', $user_id, PDO::PARAM_STR);
+			$query_score->execute();
+			// get result row (as an object)
+			return $query_score->fetchAll(PDO::FETCH_ASSOC);
 		} else {
-			try {
-				$db_connection = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-				return true;
-			} catch (PDOException $e) {
-				$errors[] = MESSAGE_DATABASE_ERROR . $e->getMessage();
-			}
+			return false;
 		}
-		return false;
 	}
 
 	function getScoresByUser(){
@@ -39,8 +42,13 @@ $errors = array();
 		}
 	}
 
-	print_r(JSON_encode(getScoresByUser()));
-
+	if ($user_id){
+		print_r(JSON_encode(getScoresByUser()));
+	}
+    if ($user_name){
+        print_r(JSON_encode(getUserId($user_name)));
+//        print_r(JSON_encode(getScoresByUserName($user_name)));
+    }
 	$db_connection = null;
 
 ?>
