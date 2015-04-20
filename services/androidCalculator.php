@@ -15,6 +15,133 @@
         $(window).on('load', function () {
             getMyScores(document.getElementById('user_id').innerHTML, document.getElementById('user_name').innerHTML.trim());
         });
+        google.load('visualization', '1.0', {'packages':['corechart']});
+        // google.setOnLoadCallback(drawChart);
+        var nMaxSize = 10000;
+        var algoritmusok = [
+            ["hits", "CoHITS"],
+            ["hamming", "Hamming"],
+            ["cosine", "Koszinusz"],
+            ["precedence", "Precedencia"],
+            ["adjacency", "Összefüggőségi"],
+            ["positional", "Pozíció szerint"]
+        ];
+        function getAlgoritmusName(algoritmus){
+            for (i = 0; i< algoritmusok.length; i++){
+                if ( algoritmusok[i][0] == algoritmus ){
+                    return algoritmusok[i][1];
+                }
+            }
+            return "Ismeretlen";
+        }
+        function clearResults(){
+            // clear graphs
+            var graph = document.getElementById("graph");
+            while (graph.hasChildNodes()) {
+                graph.removeChild(graph.lastChild);
+            }
+            var graph = document.getElementById("graph2");
+            while (graph.hasChildNodes()) {
+                graph.removeChild(graph.lastChild);
+            }
+
+            // clear textResults
+            var textResult = document.getElementById("textResult");
+            while (textResult.hasChildNodes()) {
+                textResult.removeChild(textResult.lastChild);
+            }
+            var textResult = document.getElementById("textResult2");
+            while (textResult.hasChildNodes()) {
+                textResult.removeChild(textResult.lastChild);
+            }
+
+        }
+        function drawChart(graphData, graphData2) {
+            // alert(graphData);
+            // alert(graphData2[1]);
+            graphData[1] = graphData2[1];
+
+            var data = google.visualization.arrayToDataTable(graphData);
+
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                { calc: "stringify",
+                    sourceColumn: 1,
+                    type: "string",
+                    role: "annotation" }
+            ]);
+            var options = {
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.BarChart(document.getElementById("graph"));
+            chart.draw(view, options);
+
+            // var chart = new google.visualization.BarChart(document.getElementById('graph'));
+            // chart.draw(data, options);
+        }
+        function drawChart2(graphData){
+            // alert(JSON.stringify(graphData));
+            // google.load('visualization', '1.0', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            // google.setOnLoadCallback(drawChart);
+
+            // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+
+            // Create the data table.
+            // var data = google.visualization.arrayToDataTable(
+            // 	var a = [
+            // 	['Kóstoló', 'CoHITS'],
+            // 	['tom',  18.472],
+            // 	['6. kóstoló',  100.000],
+            // 	['7. kóstoló',  95.321],
+            // 	['8. kóstoló',  94.209],
+            // 	['9. kóstoló',  90.758],
+            // 	['10. kóstoló',  91.243],
+            // 	['11. kóstoló',  96.965],
+            // 	['12. kóstoló',  99.031],
+            // ];
+            // document.getElementById('result').innerHTML = JSON.stringify(graphData);
+            // );
+            var data = google.visualization.arrayToDataTable(graphData);
+
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                { calc: "stringify",
+                    sourceColumn: 1,
+                    type: "string",
+                    role: "annotation" }
+            ]);
+            var options = {
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.BarChart(document.getElementById("graph2"));
+            chart.draw(view, options);
+
+            // var chart = new google.visualization.BarChart(document.getElementById('graph'));
+            // chart.draw(data, options);
+
+        }
+        function addTextResultHeader(){
+            var textResult = document.getElementById("textResult");
+            var p = document.createElement('p');
+            var h2 = document.createElement('h2');
+            h2.innerHTML = " Eredmény ›";
+            p.appendChild(h2);
+            textResult.appendChild(p);
+        }
+        function addTextResult2Header(){
+            var textResult = document.getElementById("textResult2");
+            var p = document.createElement('p');
+            var h2 = document.createElement('h2');
+            h2.innerHTML = " Csak az általad értékeltek alapján ›";
+            p.appendChild(h2);
+            textResult.appendChild(p);
+        }
         function getData2(returnArray, graphData2){
             var xmlhttp=new XMLHttpRequest();
             xmlhttp.onreadystatechange=function(){
@@ -71,7 +198,7 @@
                                 // document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
                             }
                         }
-                        xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+                        xmlhttpEIG.open("POST","../CoHITS_from_eig.php?q="+JSON.stringify(B),false);
                         xmlhttpEIG.send();
                     } else {
                         // alert(xmlhttp.responseText);
@@ -93,7 +220,7 @@
                     }
                 }
             }
-            xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
+            xmlhttp.open("POST","../demo.php?q="+JSON.stringify(returnArray),false);
             xmlhttp.send();
         }
         function getData(returnArray, returnArray2){
@@ -105,7 +232,7 @@
 
                     var algoritmus = returnArray[2];
                     if (algoritmus == "hits"){
-                        // alert(xmlhttp.responseText);
+//                        alert(xmlhttp.responseText);
                         var data = JSON.parse(xmlhttp.responseText);
                         // let the users client calculate eigenvalues and vectors.
                         var B = numeric.eig(numeric.transpose(data.matrix));
@@ -131,7 +258,7 @@
                                 for (var i=0; i < CoHITS.length; i++){
                                     CoHITS[i] = (CoHITS[i]/max*100);
                                 }
-                                // alert(max);
+//                                alert(max);
                                 // var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
                                 var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
                                 for (var i=0; i < CoHITS.length; i++){
@@ -152,7 +279,7 @@
                                 // document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
                             }
                         }
-                        xmlhttpEIG.open("POST","CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+                        xmlhttpEIG.open("POST","../CoHITS_from_eig.php?q="+JSON.stringify(B),false);
                         xmlhttpEIG.send();
                     } else {
                         // alert(xmlhttp.responseText);
@@ -208,7 +335,7 @@
                     }
                 }
             }
-            xmlhttp.open("POST","demo.php?q="+JSON.stringify(returnArray),false);
+            xmlhttp.open("POST","../demo.php?q="+JSON.stringify(returnArray),false);
             xmlhttp.send();
         }
         function getMyScores(user_id, user_name){
@@ -294,17 +421,18 @@
                 }
             }
 
-
             var returnArray = [ nKostolok+1, nBorok, 'hits' ];
             var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, 'hits' ];
             returnArray2.push.apply(returnArray2, tempArray3);
+
             returnArray2.push.apply(returnArray2, tempArray2);
             returnArray.push.apply(returnArray, tempArray); // teljes adatsor
-            alert(tempArray2);
+//            alert(tempArray2);
 //            alert(JSON.stringify(map));
-            result.appendChild(document.createTextNode(tempArray));
+//            result.appendChild(document.createTextNode(tempArray));
+            getData(returnArray, returnArray2);
 
-//            alert(response);
+
         }
         function submitMyScores(user_name){
             var nKostolok = 7;
@@ -445,7 +573,10 @@
     $p("asadf");
 ?>
     <div id="result">
-
+        <div id="textResult" class="textResult"></div>
+        <div id="graph" class="graph"></div>
+        <div id="textResult2" class="textResult"></div>
+        <div id="graph2" class="graph"></div>
     </div>
 </body>
 </html>
