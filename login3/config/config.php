@@ -64,8 +64,8 @@ define("COOKIE_SECRET_KEY", "1gp@TMPS{+$78sfpMJFe-92s");
 define("EMAIL_USE_SMTP", false);
 define("EMAIL_SMTP_HOST", "mail.tvarga.hu");
 define("EMAIL_SMTP_AUTH", true);
-define("EMAIL_SMTP_USERNAME", "tom@tvarga.hu");
-define("EMAIL_SMTP_PASSWORD", "tomika86");
+define("EMAIL_SMTP_USERNAME", "borkostolas@tvarga.hu");
+define("EMAIL_SMTP_PASSWORD", "winetaste123");
 define("EMAIL_SMTP_PORT", 465);
 define("EMAIL_SMTP_ENCRYPTION", "ssl");
 
