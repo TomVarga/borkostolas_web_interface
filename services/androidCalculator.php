@@ -5,7 +5,7 @@
 <head>
     <title>Borkóstolás</title>
     <meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
+    <link rel="stylesheet" type="text/css" href="androidstyle.css" media="screen, print, projection" />
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- <script type="text/javascript" src="Chart.min.js"></script> -->
     <!-- <script type="text/javascript" src="Legend.js"></script> -->
@@ -13,8 +13,9 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
         $(window).on('load', function () {
-            getMyScores(document.getElementById('user_id').innerHTML, document.getElementById('user_name').innerHTML.trim());
+            getMyScores();
         });
+        var algoritmus;
         google.load('visualization', '1.0', {'packages':['corechart']});
         // google.setOnLoadCallback(drawChart);
         var nMaxSize = 10000;
@@ -338,7 +339,11 @@
             xmlhttp.open("POST","../demo.php?q="+JSON.stringify(returnArray),false);
             xmlhttp.send();
         }
-        function getMyScores(user_id, user_name){
+        function getMyScores(){
+            var user_id = document.getElementById('user_id').innerHTML;
+            var user_name = document.getElementById('user_name').innerHTML.trim();
+            algoritmus = document.getElementById("algoritmus").value;
+
             var result = document.getElementById("result");
 //            result.appendChild(document.createTextNode(user_id));
             var nKostolok = 7;
@@ -352,7 +357,6 @@
                 if (xmlhttp.readyState==4 && xmlhttp.status==200){
                     response = xmlhttp.responseText;
                 } else {
-
                     return;
                 }
             }
@@ -375,7 +379,6 @@
                     tempArray[tempArray.length] = "";
                 }
             }
-
             nBorok = maxId;
 
             var response;
@@ -421,162 +424,56 @@
                 }
             }
 
-            var returnArray = [ nKostolok+1, nBorok, 'hits' ];
-            var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, 'hits' ];
+            var returnArray = [ nKostolok+1, nBorok, algoritmus ];
+            var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, algoritmus ];
             returnArray2.push.apply(returnArray2, tempArray3);
 
             returnArray2.push.apply(returnArray2, tempArray2);
             returnArray.push.apply(returnArray, tempArray); // teljes adatsor
-//            alert(tempArray2);
-//            alert(JSON.stringify(map));
-//            result.appendChild(document.createTextNode(tempArray));
             getData(returnArray, returnArray2);
-
-
-        }
-        function submitMyScores(user_name){
-            var nKostolok = 7;
-            var nBorok = 0;
-            var tempArray = [];
-            tempArray[tempArray.length] = user_name;
-            for (i=1;i<nMaxSize;i++) {
-                var bor_score_i = document.getElementById('wine_score_'+i);
-                if (!bor_score_i){
-                    break;
-                }
-                nBorok = i;
-
-                var bor_score_i_value = bor_score_i.value;
-                //  validate values here
-                if (isNaN(bor_score_i_value)){
-                    alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (Számnak kell lennie, vagy üresen kell hagyni)")
-                    return;
-                } else {
-                    if (bor_score_i_value > 99999.999 ){
-                        alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (túl nagy, kisebbnek kell lennie mint 99999.999)")
-                        return;
-                    }
-                    var nDecPrec = getDecPrec(bor_score_i_value);
-                    if (nDecPrec > 3){
-                        alert("Az " + i + ". bor pontszáma nem megfelelő formátumú! (túl sok a decimálisjegy, maximum 3 tizedes jegy pontosság engedélyezett)")
-                        return;
-                    }
-                }
-                tempArray[tempArray.length] = bor_score_i_value.trim();
-            }
-            // nBorok--;
-
-            var response;
-            var xmlhttp=new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-                if (xmlhttp.readyState==4 && xmlhttp.status==200){
-                    response = xmlhttp.responseText;
-                } else {
-
-                    return;
-                }
-            }
-            xmlhttp.open("POST","addWineScoresToDB.php?q="+JSON.stringify(tempArray),false);
-            xmlhttp.send();
-            // document.getElementById("result").innerHTML = response;
-
-            var response;
-            var xmlhttp=new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-                if (xmlhttp.readyState==4 && xmlhttp.status==200){
-                    response = JSON.parse(xmlhttp.responseText);
-                } else {
-                    return;
-                }
-            }
-            xmlhttp.open("POST","getWiredInScores.php",false);
-            xmlhttp.send();
-
-            var nTastedBorokBySelf = 0;
-            var tempArray3 = [];
-            for (i=0; i < tempArray.length;i++){
-                if (tempArray[i] != ""){
-                    tempArray3[tempArray3.length] = tempArray[i];
-                    nTastedBorokBySelf++;
-                }
-            }
-            nTastedBorokBySelf--;
-
-            var tempArray2 = [];
-            for (var taster in response){
-                if (response.hasOwnProperty(taster)) {
-                    tempArray2[tempArray2.length] = (taster+('. Kóstoló'));
-                    tempArray[tempArray.length] = (taster+('. Kóstoló'));
-                    for (var i=1; i <= nBorok; i++){
-                        if (response[taster][i] == null){
-                            if (tempArray[i] != ""){
-                                tempArray2[tempArray2.length] = "";
-                            }
-                            tempArray[tempArray.length] = "";
-                        } else {
-                            if (tempArray[i] != ""){
-                                tempArray2[tempArray2.length] = JSON.stringify(response[taster][i]);
-                            }
-                            tempArray[tempArray.length] = JSON.stringify(response[taster][i]);
-                        }
-                    }
-                }
-            }
-//            alert(tempArray);
-            var returnArray = [ nKostolok+1, nBorok, 'hits' ];
-            var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, 'hits' ];
-            returnArray2.push.apply(returnArray2, tempArray3);
-            returnArray2.push.apply(returnArray2, tempArray2);
-            returnArray.push.apply(returnArray, tempArray); // teljes adatsor
-//            alert(returnArray2);
-            getData(returnArray, returnArray2);
-
-
         }
 
-
+        function onSelectChange(){
+            getMyScores();
+        }
     </script>
 </head>
 <body>
-    <select id='algoritmus' name='Algoritmus'>
-        <option value='hits'>Co_HITS</option>
+    <div id="content">
+        <select id='algoritmus' name='Algoritmus' onchange='onSelectChange()' style="width: 100%;">
+            <option value='hits'>Co_HITS</option>
 
-        <option value='hamming'>Hamming</option>
-        <option value='cosine'>Koszinusz</option>
-        <option value='precedence'>Precedencia</option>
-        <option value='adjacency'>Összefüggőségi</option>
-        <option value='positional'>Pozíció szerint</option>
-        <!--<option value='sajat'>Saját</option>-->
-    </select>
-    <div id="user_id" hidden="true">
-        <?php
-            $user_id = $_REQUEST['user_id'];
-            $user_id = 3;
-            print_r($user_id);
-        ?>
-    </div>
-    <div id="user_name" hidden="true">
-        <?
-            $user_name = "";
-            include_once("dbUtils.php");
-            $user_name = getUserName($user_id);
-            print_r($user_name);
-        ?>
-    </div>
-<?php
-    $p = print_r;
-//    include_once("../getWineScoresForUser.php");
-//    $user_name = "tom";
-//    $p(getScoresByUserName($user_name));
-
-
-    $p("asadf");
-?>
-    <div id="result">
-        <div id="textResult" class="textResult"></div>
-        <div id="graph" class="graph"></div>
-        <div id="textResult2" class="textResult"></div>
-        <div id="graph2" class="graph"></div>
+            <option value='hamming'>Hamming</option>
+            <option value='cosine'>Koszinusz</option>
+            <option value='precedence'>Precedencia</option>
+            <option value='adjacency'>Összefüggőségi</option>
+            <option value='positional'>Pozíció szerint</option>
+            <!--<option value='sajat'>Saját</option>-->
+        </select>
+        <div id="user_id" hidden="true">
+            <?php
+                $user_id = $_REQUEST['user_id'];
+                // XXX some debug stuff
+                if (!isset($_REQUEST['user_id'])){
+                    $user_id = 3; // tom
+                }
+                print_r($user_id);
+            ?>
+        </div>
+        <div id="user_name" hidden="true">
+            <?
+                $user_name = "";
+                include_once("dbUtils.php");
+                $user_name = getUserName($user_id);
+                print_r($user_name);
+            ?>
+        </div>
+        <div id="result">
+            <div id="textResult" class="textResult"></div>
+            <div id="graph" class="graph"></div>
+            <div id="textResult2" class="textResult"></div>
+            <div id="graph2" class="graph"></div>
+        </div>
     </div>
 </body>
 </html>
