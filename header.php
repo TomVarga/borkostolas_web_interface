@@ -1,6 +1,5 @@
 <?php
-echo '
-	<div id="header">
+echo '<div id="header">
 		<div id="logo">
 			<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
 			<h1>Borkóstolás</h1>
