@@ -55,26 +55,11 @@
         <!--MAIN CONTENT-->
         <div id="content">
             <?php
+            include_once('services/dbUtils.php');
             if ($login->isUserLoggedIn() == true) {
-            // echo "logged in". $_SESSION['user_id'];
-            $db_connection = null;
-            function databaseConnection(){
-            global $db_connection;
-            // if connection already exists
-            if ($db_connection != null) {
-            return true;
-            } else {
-            try {
-            $db_connection = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-            return true;
-            } catch (PDOException $e) {
-            $errors[] = MESSAGE_DATABASE_ERROR . $e->getMessage();
-            }
-            }
-            return false;
-            }
-            databaseConnection();
-            echo "<h2> Demó &rsaquo;</h2>
+                $db_connection = null;
+                databaseConnection();
+                echo "<h2> Demó &rsaquo;</h2>
             <p>
                 Algoritmus:
                 <select id='algoritmus' name='Algoritmus'>
@@ -106,8 +91,8 @@
                         </tr>
                         </thead>
                         <tbody>";
-
-                        for($i=1; $i < 56; $i++){
+                        $wineCount = getWineCount()+1;
+                        for($i=1; $i < $wineCount; $i++){
                         $sth = $db_connection->prepare("SELECT * FROM wines where wine_id = $i");
                         $sth->execute();
                         $wine = $sth->fetch(PDO::FETCH_ASSOC);
@@ -129,7 +114,7 @@
 
                         $user_id = $_SESSION['user_id'];
 
-                        for($i=1; $i < 56; $i++){
+                        for($i=1; $i < $wineCount; $i++){
                         $sth = $db_connection->prepare("SELECT score FROM scores where wine_id = $i AND user_id = $user_id");
                         $sth->execute();
                         $tScore = $sth->fetch();

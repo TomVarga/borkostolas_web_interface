@@ -47,3 +47,14 @@ function getUserName($user_id){
         return false;
     }
 }
+
+function getWineCount(){
+    global $db_connection;
+    // if database connection opened
+    if (databaseConnection()) {
+        $query = $db_connection->query('SELECT MAX(wine_id) FROM wines');
+        return $query->fetch()[0];
+    } else {
+        return false;
+    }
+}
