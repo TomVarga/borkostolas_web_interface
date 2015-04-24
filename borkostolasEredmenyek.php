@@ -9,19 +9,17 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
 	<!--Load the AJAX API-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<!-- 	<script type="text/javascript" src="Chart.min.js"></script>
-	<script type="text/javascript" src="Legend.js"></script> -->
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript">
 		$(function () {
-			$('.topScrollingBlockWrapper').on('scroll', function (e) {
+			$('.topScrollingBlockWrapper').on('scroll', function () {
 				$('.leftTableContainer').scrollLeft($('.topScrollingBlockWrapper').scrollLeft());
 			});
-			$('.leftTableContainer').on('scroll', function (e) {
+			$('.leftTableContainer').on('scroll', function () {
 				$('.topScrollingBlockWrapper').scrollLeft($('.leftTableContainer').scrollLeft());
 			});
 		});
-		$(window).on('load', function (e) {
+		$(window).on('load', function () {
 			$('.topScroll').width($('.leftTable').width());
 		});
 	</script>

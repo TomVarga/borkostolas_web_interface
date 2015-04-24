@@ -1,5 +1,5 @@
 <?php
-include_once('login3/config/config.php');
+include_once('../login3/config/config.php');
 
 $db_connection = null;
 $errors = array();
@@ -40,21 +40,6 @@ $errors = array();
 		if (databaseConnection()) {
 			$query = $db_connection->query('SELECT * FROM wines');
 			return $query->fetchAll(PDO::FETCH_ASSOC);
-		} else {
-			return false;
-		}
-	}
-
-	function getWinesByYear($wine_year){
-		global $db_connection;
-		// if database connection opened
-		if (databaseConnection()) {
-			// database query, getting all the info of the selected user
-			$query_wine = $db_connection->prepare('SELECT wine_id FROM wines WHERE wine_year = :wine_year');
-			$query_wine->bindValue(':wine_year', $wine_year, PDO::PARAM_STR);
-			$query_wine->execute();
-			// get result row (as an object)
-			return $query_wine->fetchObject();
 		} else {
 			return false;
 		}

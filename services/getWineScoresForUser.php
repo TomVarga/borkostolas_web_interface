@@ -47,7 +47,6 @@ $errors = array();
 	}
     if ($user_name){
         print_r(JSON_encode(getUserId($user_name)));
-//        print_r(JSON_encode(getScoresByUserName($user_name)));
     }
 	$db_connection = null;
 

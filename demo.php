@@ -7,21 +7,19 @@
     <meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <!-- <script type="text/javascript" src="Chart.min.js"></script> -->
-    <!-- <script type="text/javascript" src="Legend.js"></script> -->
     <script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/Main.js"></script>
     <script type='text/javascript'>
         $(function () {
-            $('.topScrollingBlockWrapperForInupt').on('scroll', function (e) {
+            $('.topScrollingBlockWrapperForInupt').on('scroll', function () {
                 $('.leftTableContainerForInput').scrollLeft($('.topScrollingBlockWrapperForInupt').scrollLeft());
             });
-            $('.leftTableContainerForInput').on('scroll', function (e) {
+            $('.leftTableContainerForInput').on('scroll', function () {
                 $('.topScrollingBlockWrapperForInupt').scrollLeft($('.leftTableContainerForInput').scrollLeft());
             });
         });
-        $(window).on('load', function (e) {
+        $(window).on('load', function () {
             $('.topScroll').width($('.leftTableForInput').width());
         });
     </script>
@@ -57,7 +55,7 @@
         <!--MAIN CONTENT-->
         <div id="content">
             <?php
-					if ($login->isUserLoggedIn() == true) {
+            if ($login->isUserLoggedIn() == true) {
             // echo "logged in". $_SESSION['user_id'];
             $db_connection = null;
             function databaseConnection(){
@@ -78,14 +76,6 @@
             databaseConnection();
             echo "<h2> Demó &rsaquo;</h2>
             <p>
-                <!-- 			<a href='#' id='test' onclick='test()'>Teszt adatok használata</a><br /> -->
-                <!--				<a href='#' id='probaketto' onclick='probaketto()'>Teszt proba 2</a><br /> -->
-                <!--				<a href='#' id='probaharom' onclick='probaharom()'>Teszt proba 3</a><br /> -->
-                <!--				<br /> -->
-                <!--				Kóstolók száma: -->
-                <!--				<input type='text' id='kostolok' name='Kóstolók száma' class='headerInput' value=''><br /> -->
-                <!--				Borok száma: -->
-                <!--				<input type='text' id='borok' name='Borok száma' class='headerInput' value=''><br /> -->
                 Algoritmus:
                 <select id='algoritmus' name='Algoritmus'>
                     <option value='hits'>Co_HITS</option>
@@ -95,10 +85,8 @@
                     <option value='precedence'>Precedencia</option>
                     <option value='adjacency'>Összefüggőségi</option>
                     <option value='positional'>Pozíció szerint</option>
-                    <!--<option value='sajat'>Saját</option>-->
                 </select>
                 <br />
-                <!-- <a href='#' id='matrixGenerator' onclick='addMatrix()'>Beviteli mezők generálása</a><br /> -->
             </p>
             <div class='topScrollingBlockWrapperForInupt'>
                 <div class='topScroll'><br /></div>
@@ -162,15 +150,13 @@
                     </table>
                 </div>
             </div>";
-            $user_name = $_SESSION['user_name'];
-            echo "<p><a href='#' id='submit' onclick='submitMyScores(\"$user_name\")'>Elküld</a><br /></p>";
-
+                $user_name = $_SESSION['user_name'];
+                echo "<p><a href='#' id='submit' onclick='submitMyScores(\"$user_name\")'>Elküld</a><br /></p>";
             }else{
-            echo "<h2>A demo használatához be kell jelentkezni!</h2>";
+                echo "<h2>A demo használatához be kell jelentkezni!</h2>";
             }
             ?>
-            <!-- <div id="inputMatrix"></div> -->
-            <!-- <div id="submitMatrix"></div> -->
+
             <div id="result">
                 <div id="textResult" class="textResult"></div>
                 <div id="graph" class="graph"></div>
