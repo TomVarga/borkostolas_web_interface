@@ -147,8 +147,6 @@ function addMatrix(){
 }
 
 function drawChart(graphData, graphData2) {
-	// alert(graphData);
-	// alert(graphData2[1]);
 	graphData[1] = graphData2[1];
 
 	var data = google.visualization.arrayToDataTable(graphData);
@@ -166,36 +164,8 @@ function drawChart(graphData, graphData2) {
 	// Instantiate and draw our chart, passing in some options.
 	var chart = new google.visualization.BarChart(document.getElementById("graph"));
 	chart.draw(view, options);
-
-	// var chart = new google.visualization.BarChart(document.getElementById('graph'));
-	// chart.draw(data, options);
 }
 function drawChart2(graphData){
-	// alert(JSON.stringify(graphData));
-	// google.load('visualization', '1.0', {'packages':['corechart']});
-
-	// Set a callback to run when the Google Visualization API is loaded.
-	// google.setOnLoadCallback(drawChart);
-
-	// Callback that creates and populates a data table,
-	// instantiates the pie chart, passes in the data and
-	// draws it.
-
-	// Create the data table.
-	// var data = google.visualization.arrayToDataTable(
-	// 	var a = [
-	// 	['Kóstoló', 'CoHITS'],
-	// 	['tom',  18.472],
-	// 	['6. kóstoló',  100.000],
-	// 	['7. kóstoló',  95.321],
-	// 	['8. kóstoló',  94.209],
-	// 	['9. kóstoló',  90.758],
-	// 	['10. kóstoló',  91.243],
-	// 	['11. kóstoló',  96.965],
-	// 	['12. kóstoló',  99.031],
-	// ];
-	// document.getElementById('result').innerHTML = JSON.stringify(graphData);
-	// );
 	var data = google.visualization.arrayToDataTable(graphData);
 
 	var view = new google.visualization.DataView(data);
@@ -211,10 +181,6 @@ function drawChart2(graphData){
 	// Instantiate and draw our chart, passing in some options.
 	var chart = new google.visualization.BarChart(document.getElementById("graph2"));
 	chart.draw(view, options);
-
-	// var chart = new google.visualization.BarChart(document.getElementById('graph'));
-	// chart.draw(data, options);
-
 }
 function addTextResultHeader(){
 	var textResult = document.getElementById("textResult");
@@ -267,7 +233,6 @@ function getData2(returnArray, graphData2){
 						for (var i=0; i < CoHITS.length; i++){
 							CoHITS[i] = (CoHITS[i]/max*100);
 						}
-						// alert(max);
 						// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
 						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 						for (var i=0; i < CoHITS.length; i++){
@@ -285,13 +250,11 @@ function getData2(returnArray, graphData2){
 						addTextResult2Header();
 						drawChart(graphData2, graphData);
 
-						// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
 					}
 				}
 				xmlhttpEIG.open("POST","../phpHelpers/CoHITS_from_eig.php?q="+JSON.stringify(B),false);
 				xmlhttpEIG.send();
 			} else {
-				// alert(xmlhttp.responseText);
 				var response = JSON.parse(xmlhttp.responseText);
 				var array=[];
 				for(a in response){
@@ -317,12 +280,8 @@ function getData(returnArray, returnArray2){
 	var xmlhttp=new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function(){
 		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-
-			// document.getElementById("result").innerHTML = xmlhttp.responseText;
-
 			var algoritmus = returnArray[2];
 			if (algoritmus == "hits"){
-//                        alert(xmlhttp.responseText);
 				var data = JSON.parse(xmlhttp.responseText);
 				// let the users client calculate eigenvalues and vectors.
 				var B = numeric.eig(numeric.transpose(data.matrix));
@@ -348,7 +307,6 @@ function getData(returnArray, returnArray2){
 						for (var i=0; i < CoHITS.length; i++){
 							CoHITS[i] = (CoHITS[i]/max*100);
 						}
-//                                alert(max);
 						// var graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}]};
 						var graphData = [['Kóstoló', getAlgoritmusName(algoritmus)]];
 						for (var i=0; i < CoHITS.length; i++){
@@ -359,20 +317,12 @@ function getData(returnArray, returnArray2){
 						// if (bZeroCollerlationFound){
 						// 	graphData = {labels: data.tOrderOfTasters, datasets: [{label: 'CoHITS', data: CoHITS}, {label: 'Különbségek átlaga', data: tSumOfDiff}]};
 						// }
-						// alert(tCorrelation);;
-						// clearResults();
-						// addTextResultHeader();
-						// drawChart2(graphData);
-						// addTextResult2Header();
-						// drawChart(graphData[1]);
 						getData2(returnArray2, graphData);
-						// document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
 					}
 				}
 				xmlhttpEIG.open("POST","../phpHelpers/CoHITS_from_eig.php?q="+JSON.stringify(B),false);
 				xmlhttpEIG.send();
 			} else {
-				// alert(xmlhttp.responseText);
 				var response = JSON.parse(xmlhttp.responseText);
 				var array=[];
 				for(a in response){
@@ -383,45 +333,6 @@ function getData(returnArray, returnArray2){
 					graphData[graphData.length] = [array[i][0],+array[i][1].toFixed(3)];
 				}
 				getData2(returnArray2, graphData);
-				// array.sort(function(a,b){return a[1] - b[1]});
-				// array.reverse();
-				// // alert(array[0][0]);
-				// clearResults();
-				// addTextResultHeader();
-
-				// var tbl = document.createElement('table');
-				// var thead = document.createElement('thead');
-				// var trHead = document.createElement('tr');
-				// var th = document.createElement("th");
-				// th.appendChild(document.createTextNode("#"));
-				// trHead.appendChild(th);
-				// var th = document.createElement("th");
-				// th.appendChild(document.createTextNode("Név"));
-				// trHead.appendChild(th);
-				// var th = document.createElement("th");
-				// th.appendChild(document.createTextNode("Értékelés"));
-				// trHead.appendChild(th);
-				// thead.appendChild(trHead);
-				// tbl.appendChild(thead);
-
-				// var nKostolok = array.length;
-				// var tbdy=document.createElement('tbody');
-				// for (i=0;i<nKostolok;i++){
-				// 	var tr=document.createElement('tr');
-				// 	var td=document.createElement('td');
-				// 	td.appendChild(document.createTextNode((i+1)+"."));
-				// 	tr.appendChild(td);
-				// 	var td=document.createElement('td');
-				// 	td.appendChild(document.createTextNode(array[i][0]));
-				// 	tr.appendChild(td);
-				// 	var td=document.createElement('td');
-				// 	td.appendChild(document.createTextNode(array[i][1]));
-				// 	tr.appendChild(td);
-				// 	tbdy.appendChild(tr);
-				// }
-				// tbl.appendChild(tbdy);
-
-				// document.getElementById("textResult").appendChild(tbl);
 			}
 		}
 	}
@@ -434,7 +345,7 @@ function getMyScores(){
 	algoritmus = document.getElementById("algoritmus").value;
 
 	var result = document.getElementById("result");
-//            result.appendChild(document.createTextNode(user_id));
+
 	var nKostolok = 7;
 	var nBorok = 0;
 	var tempArray = [];
@@ -526,7 +437,6 @@ function onSelectChange(){
 	getMyScores();
 }
 
-
 function submitMyScores(user_name){
 	var nKostolok = 7;
 	var nBorok = 0;
@@ -557,8 +467,6 @@ function submitMyScores(user_name){
 		}
 		tempArray[tempArray.length] = bor_score_i_value.trim();
 	}
-//            alert(tempArray);
-	// nBorok--;
 
 	var response;
 	var xmlhttp=new XMLHttpRequest();
@@ -572,7 +480,6 @@ function submitMyScores(user_name){
 	}
 	xmlhttp.open("POST","../services/addWineScoresToDB.php?q="+JSON.stringify(tempArray),false);
 	xmlhttp.send();
-	// document.getElementById("result").innerHTML = response;
 
 	var response;
 	var xmlhttp=new XMLHttpRequest();
@@ -617,14 +524,11 @@ function submitMyScores(user_name){
 		}
 	}
 
-	//alert(tempArray2);
-//            alert(tempArray);
 	var returnArray = [ nKostolok+1, nBorok, document.getElementById('algoritmus').value ];
 	var returnArray2 = [ nKostolok+1, nTastedBorokBySelf, document.getElementById('algoritmus').value ];
 	returnArray2.push.apply(returnArray2, tempArray3);
 	returnArray2.push.apply(returnArray2, tempArray2);
 	returnArray.push.apply(returnArray, tempArray); // teljes adatsor
-//            alert(returnArray2);
 	getData(returnArray, returnArray2);
 
 }
