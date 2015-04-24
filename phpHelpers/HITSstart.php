@@ -186,22 +186,6 @@
 			$tSumOfDiffFromAvg[$sTaster] = array_sum($tScores);
 		}
 
-		// $transposed_array = Array();
-		// if ($array) {
-		// 	foreach ($array as $row_key => $row) {
-		// 		if (is_array($row) && !empty($row)) { //check to see if there is a second dimension
-		// 			foreach ($row as $column_key => $element) {
-		// 				$transposed_array[$column_key][$row_key] = $element;
-		// 			}
-		// 		}else {
-		// 			$transposed_array[0][$row_key] = $row;
-		// 		}
-		// 	}
-		// 	return $transposed_array;
-		// }
-
-		// $b = transpose($);;
-
 		$tCorrelation = Array();
 		foreach ($tData as $sTaster => $tDataForTaster) {
 			$tCorrelation[$sTaster] = korrelByTaster($sTaster, $tData, $tTasterAvgScore, $tItemAvg);
@@ -274,21 +258,6 @@
 
 		$tWRightMultipliedBytWLeftTransposed = matrixmult($tWRightData, $tWLeftTransposed);
 
-		// function stationary($A){
-		// 	$M = sizeof($A);
-		// 	$N = sizeof($A[0]);
-		// 	if ($M != $N){throw new Exception('Matrix A not square');}
-
-		// }
-
-		// echo stationary($tWRightMultipliedBytWLeftTransposed);
-		// echo print_r($tWRightMultipliedBytWLeftTransposed);
-
-		// echo "
-		// <script>
-		// 	eig($tWRightMultipliedBytWLeftTransposed);
-		// </script>
-		// ";
 		// return with this so eigs can be calculated with javascript then another php file will continue the other calculations
 		$tTemp = Array();;
 		$tTemp["matrix"] = $tWRightMultipliedBytWLeftTransposed;

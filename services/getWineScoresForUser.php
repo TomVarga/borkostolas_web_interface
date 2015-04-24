@@ -5,7 +5,6 @@ $user_id = $_REQUEST['user_id'];
 $user_id = preg_replace( "/[^0-9]/", "", $user_id);
 $user_name = $_REQUEST['user_name'];
 
-// $user_id = "3";
 $db_connection = null;
 $errors = array();
 

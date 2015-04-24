@@ -1,15 +1,13 @@
 <?php
 	$str=$_REQUEST["q"];
 	$array = json_decode($str);
-	// print_r($array);
-	// $array = ["tom","","13","","","","","","","","","","","","","","","","","","","10","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
+
 	require_once('../login3/config/config.php');
 	require_once('../login3/translations/hu.php');
 	require_once('../login3/libraries/PHPMailer.php');
 	@require_once('../login3/classes/Login.php');
 	$login = new Login();
 	if ($login->isUserLoggedIn() == true) {
-			// print_r($array);
 
 			$db_connection = null;
 			$errors = array();
@@ -33,8 +31,6 @@
 			databaseConnection();
 
 			$user_name = $array[0];
-// 			// $user_name = "asdf";
-			// print_r($array);
 
 			$sth = $db_connection->prepare('SELECT user_id FROM users WHERE user_name = :user_name');
 			$sth->bindValue(':user_name', $user_name, PDO::PARAM_STR);
@@ -62,12 +58,8 @@
 							$sth = $db_connection->prepare('UPDATE scores SET score = null WHERE user_id = :user_id and wine_id = :wine_id');
 							$sth->bindValue(':user_id', $user_id, PDO::PARAM_STR);
 							$sth->bindValue(':wine_id', $wine_id, PDO::PARAM_STR);
-							// $sth->bindValue(':score', null, PDO::PARAM_STR);
+
 							$sth->execute();
-							// $sth = $db_connection->prepare('DELETE FROM scores WHERE user_id = :user_id and wine_id = :wine_id');
-							// $sth->bindValue(':user_id', $user_id, PDO::PARAM_STR);
-							// $sth->bindValue(':wine_id', $wine_id, PDO::PARAM_STR);
-							// $sth->execute();
 						}
 					} else { // no data found just insert
 						if (is_numeric($score)){
@@ -82,7 +74,6 @@
 				
 				// echo "Adatbázis sikeresen frissítve.";
 			}
-			// print_r($array[56]);
 			$db_connection = null;
 
 			print_r("Success");
