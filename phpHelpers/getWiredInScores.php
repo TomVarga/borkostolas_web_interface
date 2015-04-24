@@ -52,7 +52,7 @@ $errors = array();
 	 		print "no results found";
 	 	}
 	 	
- 	}
+	}
 
 	$db_connection = null;
 

@@ -10,45 +10,45 @@
 
 
 <body>
-	<div id="wrapper">
-		<!--HEADER/LOGO-->
-		<div id="header">
-			<div id="logo">
-				<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
-				<h1>Borkóstolás</h1>
-			</div>
-
-			<!--TAB NAVIGATION-->
-			<div id="topnav">
-				<a href="index.php">Főoldal</a>
-				<a href="borkostolasEredmenyek.php">Eredmények</a>
-				<a href="demo.php">Demó</a>
-				<a href="modszerek.php" class="active">Módszerek</a>
-				<a href="kapcsolat.php">Kapcsolat</a>
-			</div>
+<div id="wrapper">
+	<!--HEADER/LOGO-->
+	<div id="header">
+		<div id="logo">
+			<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
+			<h1>Borkóstolás</h1>
 		</div>
 
-		<div id="contentWrapper">
-			<!--SIDE BAR CONTENT-->
-            <?php include('sidebar.php'); ?>
-			<!--MAIN CONTENT-->
-			<div id="content">
-
-				<h2> Módszerek &rsaquo;</h2>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/>
-				</p>
-			</div>
+		<!--TAB NAVIGATION-->
+		<div id="topnav">
+			<a href="index.php">Főoldal</a>
+			<a href="borkostolasEredmenyek.php">Eredmények</a>
+			<a href="demo.php">Demó</a>
+			<a href="modszerek.php" class="active">Módszerek</a>
+			<a href="kapcsolat.php">Kapcsolat</a>
 		</div>
-
-		<!--THE FOOTER-->
-        <?php include('footer.php'); ?>
 	</div>
+
+	<div id="contentWrapper">
+		<!--SIDE BAR CONTENT-->
+		<?php include('sidebar.php'); ?>
+		<!--MAIN CONTENT-->
+		<div id="content">
+
+			<h2> Módszerek &rsaquo;</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+				cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+				proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/>
+			</p>
+		</div>
+	</div>
+
+	<!--THE FOOTER-->
+	<?php include('footer.php'); ?>
+</div>
 </body>
 </html>
 

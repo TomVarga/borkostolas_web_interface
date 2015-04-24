@@ -11,45 +11,45 @@
 
 
 <body>
-	<div id="wrapper">
-		<!--HEADER/LOGO-->
-		<div id="header">
-			<div id="logo">
-				<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
-				<h1>Borkóstolás</h1>
-			</div>
-
-			<!--TAB NAVIGATION-->
-			<div id="topnav">
-				<a href="index.php">Főoldal</a>
-				<a href="borkostolasEredmenyek.php">Eredmények</a>
-				<a href="demo.php">Demó</a>
-				<a href="modszerek.php">Módszerek</a>
-				<a href="kapcsolat.php">Kapcsolat</a>
-			</div>
+<div id="wrapper">
+	<!--HEADER/LOGO-->
+	<div id="header">
+		<div id="logo">
+			<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
+			<h1>Borkóstolás</h1>
 		</div>
 
-		<div id="contentWrapper">
-			<!--SIDE BAR CONTENT-->
-            <?php include('sidebar.php'); ?>
-
-			<!--MAIN CONTENT-->
-			<div id="content">
-				<h2>Elfelejtett jelszó &rsaquo;</h2>
-				<?php
-				if ($login->passwordResetWasSuccessful() == true && $login->passwordResetLinkIsValid() != true) {
-					include("login3/views/not_logged_in.php");
-
-				} else {
-					// show the request-a-password-reset or type-your-new-password form
-					include("login3/views/password_reset.php");
-				}
-				?>
-			</div>
+		<!--TAB NAVIGATION-->
+		<div id="topnav">
+			<a href="index.php">Főoldal</a>
+			<a href="borkostolasEredmenyek.php">Eredmények</a>
+			<a href="demo.php">Demó</a>
+			<a href="modszerek.php">Módszerek</a>
+			<a href="kapcsolat.php">Kapcsolat</a>
 		</div>
-
-		<!--THE FOOTER-->
-        <?php include('footer.php'); ?>
 	</div>
+
+	<div id="contentWrapper">
+		<!--SIDE BAR CONTENT-->
+		<?php include('sidebar.php'); ?>
+
+		<!--MAIN CONTENT-->
+		<div id="content">
+			<h2>Elfelejtett jelszó &rsaquo;</h2>
+			<?php
+			if ($login->passwordResetWasSuccessful() == true && $login->passwordResetLinkIsValid() != true) {
+				include("login3/views/not_logged_in.php");
+
+			} else {
+				// show the request-a-password-reset or type-your-new-password form
+				include("login3/views/password_reset.php");
+			}
+			?>
+		</div>
+	</div>
+
+	<!--THE FOOTER-->
+	<?php include('footer.php'); ?>
+</div>
 </body>
 </html>

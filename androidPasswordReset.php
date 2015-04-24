@@ -14,21 +14,22 @@
 
 <!--MAIN CONTENT-->
 <div id="content">
-    <h2>Elfelejtett jelszó &rsaquo;</h2>
-    <?php
-            require_once('login3/config/config.php');
-            require_once('login3/translations/hu.php');
-            require_once('login3/libraries/PHPMailer.php');
-            @require_once('login3/classes/Login.php');
-            $login = new Login();
-            if ($login->passwordResetWasSuccessful() == true && $login->passwordResetLinkIsValid() != true) {
-    include("login3/views/not_logged_in.php");
+	<h2>Elfelejtett jelszó &rsaquo;</h2>
+	<?php
+	require_once('login3/config/config.php');
+	require_once('login3/translations/hu.php');
+	require_once('login3/libraries/PHPMailer.php');
 
-    } else {
-    // show the request-a-password-reset or type-your-new-password form
-    include("login3/views/password_reset.php");
-    }
-    ?>
+	@require_once('login3/classes/Login.php');
+	$login = new Login();
+	if ($login->passwordResetWasSuccessful() == true && $login->passwordResetLinkIsValid() != true) {
+		include("login3/views/not_logged_in.php");
+
+	} else {
+		// show the request-a-password-reset or type-your-new-password form
+		include("login3/views/password_reset.php");
+	}
+	?>
 </div>
 
 </body>

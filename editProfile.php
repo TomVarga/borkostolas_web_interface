@@ -31,7 +31,7 @@
 
 		<div id="contentWrapper">
 			<!--SIDE BAR CONTENT-->
-            <?php include('sidebar.php'); ?>
+			<?php include('sidebar.php'); ?>
 
 			<!--MAIN CONTENT-->
 			<div id="content">
@@ -43,7 +43,7 @@
 		</div>
 
 		<!--THE FOOTER-->
-        <?php include('footer.php'); ?>
+		<?php include('footer.php'); ?>
 	</div>
 </body>
 </html>
