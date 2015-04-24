@@ -73,7 +73,7 @@ define("EMAIL_SMTP_ENCRYPTION", "ssl");
  * Configuration for: password reset email data
  * Set the absolute URL to password_reset.php, necessary for email password reset links
  */
-define("EMAIL_PASSWORDRESET_URL", "http://bor.tvarga.hu/passwordReset.html");
+define("EMAIL_PASSWORDRESET_URL", "http://bor.tvarga.hu/passwordReset.php");
 define("EMAIL_PASSWORDRESET_FROM", "no-reply@tvarga.hu");
 define("EMAIL_PASSWORDRESET_FROM_NAME", "Borkóstolás");
 define("EMAIL_PASSWORDRESET_SUBJECT", "Jelszó visszaállítása bor.tvarga.hu - borkóstolás");
@@ -83,7 +83,7 @@ define("EMAIL_PASSWORDRESET_CONTENT", "Kérlek kattints erre a linkre ahhoz hogy
  * Configuration for: verification email data
  * Set the absolute URL to register.php, necessary for email verification links
  */
-define("EMAIL_VERIFICATION_URL", "http://bor.tvarga.hu/register.html");
+define("EMAIL_VERIFICATION_URL", "http://bor.tvarga.hu/register.php");
 define("EMAIL_VERIFICATION_FROM", "no-reply@tvarga.hu");
 define("EMAIL_VERIFICATION_FROM_NAME", "Borkóstolás");
 define("EMAIL_VERIFICATION_SUBJECT", "Fiók aktiválás bor.tvarga.hu - Borkóstolás");

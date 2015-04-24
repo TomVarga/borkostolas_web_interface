@@ -1,5 +1,5 @@
 <?php
-include_once('login3/config/config.php');
+include_once('../login3/config/config.php');
 
 $db_connection = null;
 $errors = array();

@@ -6,7 +6,7 @@
     <link href="favicon.ico" rel="icon" type="image/x-icon" />
     <title>Borkóstolás</title>
     <meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="services/androidstyle.css" media="screen, print, projection" />
+    <link rel="stylesheet" type="text/css" href="css/androidstyle.css" media="screen, print, projection" />
 </head>
 
 

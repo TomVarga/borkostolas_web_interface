@@ -1,5 +1,5 @@
 <?php
-include_once('services/dbUtils.php');
+include_once('dbUtils.php');
 
 $user_id = $_REQUEST['user_id'];
 $user_id = preg_replace( "/[^0-9]/", "", $user_id);

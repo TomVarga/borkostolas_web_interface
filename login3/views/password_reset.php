@@ -3,7 +3,7 @@
 <div>
 <p>
 <?php if ($login->passwordResetLinkIsValid() == true) { ?>
-<form method="post" action="passwordReset.html" name="new_password_form">
+<form method="post" action="passwordReset.php" name="new_password_form">
 	<input type='hidden' name='user_name' value='<?php echo $_GET['user_name']; ?>' />
 	<input type='hidden' name='user_password_reset_hash' value='<?php echo $_GET['verification_code']; ?>' />
 
@@ -16,7 +16,7 @@
 </form>
 <!-- no data from a password-reset-mail has been provided, so we simply show the request-a-password-reset form -->
 <?php } else { ?>
-<form method="post" action="passwordReset.html" name="password_reset_form">
+<form method="post" action="passwordReset.php" name="password_reset_form">
 	<label for="user_name"><?php echo WORDING_REQUEST_PASSWORD_RESET; ?></label>
 	<br />
 	<br />

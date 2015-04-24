@@ -288,7 +288,7 @@ function getData2(returnArray, graphData2){
                         // document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
                     }
                 }
-                xmlhttpEIG.open("POST","../CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+                xmlhttpEIG.open("POST","../phpHelpers/CoHITS_from_eig.php?q="+JSON.stringify(B),false);
                 xmlhttpEIG.send();
             } else {
                 // alert(xmlhttp.responseText);
@@ -310,7 +310,7 @@ function getData2(returnArray, graphData2){
             }
         }
     }
-    xmlhttp.open("POST","../demo.php?q="+JSON.stringify(returnArray),false);
+    xmlhttp.open("POST","../phpHelpers/selectAlgorithm.php?q="+JSON.stringify(returnArray),false);
     xmlhttp.send();
 }
 function getData(returnArray, returnArray2){
@@ -369,7 +369,7 @@ function getData(returnArray, returnArray2){
                         // document.getElementById("result").innerHTML = JSON.stringify(tSumOfDiff);
                     }
                 }
-                xmlhttpEIG.open("POST","../CoHITS_from_eig.php?q="+JSON.stringify(B),false);
+                xmlhttpEIG.open("POST","../phpHelpers/CoHITS_from_eig.php?q="+JSON.stringify(B),false);
                 xmlhttpEIG.send();
             } else {
                 // alert(xmlhttp.responseText);
@@ -425,7 +425,7 @@ function getData(returnArray, returnArray2){
             }
         }
     }
-    xmlhttp.open("POST","../demo.php?q="+JSON.stringify(returnArray),false);
+    xmlhttp.open("POST","../phpHelpers/selectAlgorithm.php?q="+JSON.stringify(returnArray),false);
     xmlhttp.send();
 }
 function getMyScores(){
@@ -449,7 +449,7 @@ function getMyScores(){
             return;
         }
     }
-    xmlhttp.open("POST","../getWineScoresForUser.php?user_id="+JSON.stringify(user_id),false);
+    xmlhttp.open("POST","getWineScoresForUser.php?user_id="+JSON.stringify(user_id),false);
     xmlhttp.send();
     response = JSON.parse(response);
 
@@ -479,7 +479,7 @@ function getMyScores(){
             return;
         }
     }
-    xmlhttp.open("POST","../getWiredInScores.php",false);
+    xmlhttp.open("POST","../phpHelpers/getWiredInScores.php",false);
     xmlhttp.send();
 
     var nTastedBorokBySelf = 0;
@@ -570,7 +570,7 @@ function submitMyScores(user_name){
             return;
         }
     }
-    xmlhttp.open("POST","../addWineScoresToDB.php?q="+JSON.stringify(tempArray),false);
+    xmlhttp.open("POST","../services/addWineScoresToDB.php?q="+JSON.stringify(tempArray),false);
     xmlhttp.send();
     // document.getElementById("result").innerHTML = response;
 
@@ -583,7 +583,7 @@ function submitMyScores(user_name){
             return;
         }
     }
-    xmlhttp.open("POST","../getWiredInScores.php",false);
+    xmlhttp.open("POST","../phpHelpers/getWiredInScores.php",false);
     xmlhttp.send();
 
     var nTastedBorokBySelf = 0;

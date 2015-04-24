@@ -5,7 +5,7 @@
 <head>
     <title>Borkóstolás</title>
     <meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="androidstyle.css" media="screen, print, projection" />
+    <link rel="stylesheet" type="text/css" href="../css/androidstyle.css" media="screen, print, projection" />
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- <script type="text/javascript" src="Chart.min.js"></script> -->
     <!-- <script type="text/javascript" src="Legend.js"></script> -->
@@ -18,7 +18,6 @@
         });
         google.load('visualization', '1.0', {'packages':['corechart']});
         // google.setOnLoadCallback(drawChart);
-
 
     </script>
 </head>

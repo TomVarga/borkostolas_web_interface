@@ -3,10 +3,10 @@
 	$array = json_decode($str);
 	// print_r($array);
 	// $array = ["tom","","13","","","","","","","","","","","","","","","","","","","10","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
-	require_once('login3/config/config.php');
-	require_once('login3/translations/hu.php');
-	require_once('login3/libraries/PHPMailer.php');
-	@require_once('login3/classes/Login.php');
+	require_once('../login3/config/config.php');
+	require_once('../login3/translations/hu.php');
+	require_once('../login3/libraries/PHPMailer.php');
+	@require_once('../login3/classes/Login.php');
 	$login = new Login();
 	if ($login->isUserLoggedIn() == true) {
 			// print_r($array);

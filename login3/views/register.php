@@ -4,7 +4,7 @@
 <div id="register">
 <p>
 <?php if (!$registration->registration_successful && !$registration->verification_successful) { ?>
-<form method="post" action="register.html" name="registerform">
+<form method="post" action="register.php" name="registerform">
 	<br />
 	<label for="user_name"><?php echo WORDING_REGISTRATION_USERNAME; ?></label>
 	<br />

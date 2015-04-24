@@ -6,7 +6,7 @@
 }
 
 html, body {
-	background: #fff url(bodybg.png) repeat-x;
+	background: #fff url(../resources/images/bodybg.png) repeat-x;
 	font-family: Verdana, Arial, sans-serif;
 	font-size: 16px;
 	color: #000;
@@ -91,20 +91,20 @@ a {
 	color: #a0a0a0;
 	text-transform: uppercase;
 	font-size: 0.7em;
-	background-image:url(tab.png);
+	background-image:url(../resources/images/tab.png);
 	background-position:bottom left;
 	background-repeat:no-repeat;
 }
 
 #topnav a:hover {
-	background-image:url(tab.png);
+	background-image:url(../resources/images/tab.png);
 	color: #000;
 	background-position:top left;
 	background-repeat:no-repeat;
 }
 
 #topnav .active {
-	background-image:url(tab.png);
+	background-image:url(../resources/images/tab.png);
 	color: #FE5F6F;
 	background-position:top left;
 	background-repeat:no-repeat;
@@ -426,7 +426,7 @@ form {
 	font-size: 0.7em;
 	padding-top: 40px;
 
-	background: #333333 url(bg2.png) repeat-x;
+	background: #333333 url(../resources/images/bg2.png) repeat-x;
 	width: 100%;
 }
 

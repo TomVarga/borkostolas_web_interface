@@ -5,7 +5,7 @@
 <head>
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
 </head>
 
 
@@ -14,20 +14,19 @@
 		<!--HEADER/LOGO-->
 		<div id="header">
 			<div id="logo">
-				<img src="header_image.jpg" alt="Fejléc kép" class="headerImage" />
+				<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
 				<h1>Borkóstolás</h1>
 			</div>
 
 			<!--TAB NAVIGATION-->
 			<div id="topnav">
-				<a href="index.html">Főoldal</a>
-				<a href="borkostolasEredmenyek.html">Eredmények</a>
-				<a href="demo.html">Demó</a>
-				<a href="modszerek.html" class="active">Módszerek</a>
-				<a href="kapcsolat.html">Kapcsolat</a>
+				<a href="index.php">Főoldal</a>
+				<a href="borkostolasEredmenyek.php">Eredmények</a>
+				<a href="demo.php">Demó</a>
+				<a href="modszerek.php">Módszerek</a>
+				<a href="kapcsolat.php" class="active">Kapcsolat</a>
 			</div>
 		</div>
-
 		<div id="contentWrapper">
 			<!--SIDE BAR CONTENT-->
 			<div id="sidebar">
@@ -45,7 +44,7 @@
 			<!--MAIN CONTENT-->
 			<div id="content">
 
-				<h2> Módszerek &rsaquo;</h2>
+				<h2> Kapcsolat &rsaquo;</h2>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -67,4 +66,3 @@
 	</div>
 </body>
 </html>
-

@@ -5,7 +5,7 @@
 <head>
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="style.css" media="screen, print, projection" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
 </head>
 
 
@@ -14,17 +14,17 @@
 		<!--HEADER/LOGO-->
 		<div id="header">
 			<div id="logo">
-				<img src="header_image.jpg" alt="Fejléc kép" class="headerImage" />
+				<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
 				<h1>Borkóstolás</h1>
 			</div>
 
 			<!--TAB NAVIGATION-->
 			<div id="topnav">
-				<a href="index.html">Főoldal</a>
-				<a href="borkostolasEredmenyek.html">Eredmények</a>
-				<a href="modszerek.html">Módszerek</a>
-				<a href="gyik.html" class="active">GYIK</a>
-				<a href="kapcsolat.html">Kapcsolat</a>
+				<a href="index.php">Főoldal</a>
+				<a href="borkostolasEredmenyek.php">Eredmények</a>
+				<a href="modszerek.php">Módszerek</a>
+				<a href="gyik.php" class="active">GYIK</a>
+				<a href="kapcsolat.php">Kapcsolat</a>
 			</div>
 		</div>
 

@@ -15,7 +15,7 @@
 	</form>
 </div>
 
-<a href="register.html" class="link"><?php echo WORDING_REGISTER_NEW_ACCOUNT; ?></a>
-<a href="passwordReset.html" class="link"><?php echo WORDING_FORGOT_MY_PASSWORD; ?></a>
+<a href="register.php" class="link"><?php echo WORDING_REGISTER_NEW_ACCOUNT; ?></a>
+<a href="passwordReset.php" class="link"><?php echo WORDING_FORGOT_MY_PASSWORD; ?></a>
 
 

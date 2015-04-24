@@ -8,6 +8,6 @@ echo WORDING_PROFILE_PICTURE . '<br/><br/>' . $login->user_gravatar_image_tag;
 ?>
 
 <a href="<?php echo curPageName();?>?logout" class="link"><?php echo WORDING_LOGOUT; ?></a>
-<a href="editProfile.html" class="link"><?php echo WORDING_EDIT_USER_DATA; ?></a>
+<a href="editProfile.php" class="link"><?php echo WORDING_EDIT_USER_DATA; ?></a>
 
 
