@@ -36,9 +36,3 @@
 </form><hr/>
 </p>
 </div>
-<!-- backlink -->
-<!-- <a href="index.php"><?php echo WORDING_BACK_TO_LOGIN; ?></a> -->
-
-<?php
-// include('_footer.php');
-?>
