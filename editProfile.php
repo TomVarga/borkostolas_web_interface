@@ -31,39 +31,7 @@
 
 		<div id="contentWrapper">
 			<!--SIDE BAR CONTENT-->
-			<div id="sidebar">
-				<div id="container2">
-					<div class="blocklinks">
-						<?php
-						require_once('login3/config/config.php');
-						require_once('login3/translations/hu.php');
-						require_once('login3/libraries/PHPMailer.php');
-						@require_once('login3/classes/Login.php');
-						$login = new Login();
-						if ($login->isUserLoggedIn() == true) {
-	// the user is logged in. you can do whatever you want here.
-	// for demonstration purposes, we simply show the "you are logged in" view.
-							echo '<h3>' . $_SESSION['user_name'] . '&rsaquo;</h3>';
-							include("login3/views/logged_in.php");
-
-						} else {
-	// the user is not logged in. you can do whatever you want here.
-	// for demonstration purposes, we simply show the "you are not logged in" view.
-							echo '<h3>Bejelentkezés &rsaquo;</h3>';
-							include("login3/views/not_logged_in.php");
-						}
-						?>
-						<br />
-						<h3>Legfrisseb információk &rsaquo;</h3>
-						<a href="#" class="link">Az még nincs</a>
-						<a href="#" class="link">sajnos.</a>
-						<br />
-						<h3>Linkek &rsaquo;</h3>
-						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
-						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
-					</div>
-				</div>
-			</div>
+            <?php include('sidebar.php'); ?>
 
 			<!--MAIN CONTENT-->
 			<div id="content">
@@ -75,12 +43,7 @@
 		</div>
 
 		<!--THE FOOTER-->
-		<div id="footer">
-			<div id="footerText">
-				<p>Készítette - 2014 Varga Tamás</p>
-				&nbsp;
-			</div>
-		</div>
+        <?php include('footer.php'); ?>
 	</div>
 </body>
 </html>

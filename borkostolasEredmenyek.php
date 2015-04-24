@@ -51,59 +51,6 @@
 			var chart = new google.visualization.ColumnChart(document.getElementById("graph"));
 			chart.draw(data, options);
 
-			// var graph = document.getElementById("graph");
-			// while (graph.hasChildNodes()) {
-			// 	graph.removeChild(graph.lastChild);
-			// }
-			// var chartGraph = document.createElement('div');
-			// chartGraph.id = 'chartGraph';
-			// chartGraph.className = 'chartGraph';
-			// var canvas = document.createElement('canvas');
-			// canvas.id = 'myChart';
-			// chartGraph.appendChild(canvas);
-			// graph.appendChild(chartGraph);
-			// var chartLegend = document.createElement('div');
-			// chartLegend.id = 'chartLegend';
-			// chartLegend.className = 'chartLegend';
-			// graph.appendChild(chartLegend);
-			// // alert(graphData[0]);
-			// var ctx = canvas.getContext("2d");
-			// var options = {multiTooltipTemplate: "<%= datasetLabel %>: <%= value %>"};
-			// var data = {
-			// 	labels: ["1. Kóstoló","2. Kóstoló","3. Kóstoló","4. Kóstoló","5. Kóstoló","6. Kóstoló","7. Kóstoló"],
-			// 	datasets: [{"label":"CoHITS","data":[0.150807820871,0.14264075743,0.140370653779,0.135605804035,0.136630841819,0.147008065002,0.146936057064]},{"label":"Korreláció","data":[0.819838622814,0.767161200075,0.639048657415,0.531053310191,0.74315011031,0.695260795848,0.61544368154]},{"label":"Különbségek átlaga","data":[0.89796775814,0.715520880337,0.896240519253,0.599607230856,0.800791717914,1,0.919458316967]}],
-			// };
-			// // var nColor = 220;
-			// // var nColorGap = 40;
-
-			// var tColors = [
-			// 	'255,99,71',
-			// 	'255,215,0',
-			// 	'32,178,170',
-			// 	'124,252,0',
-			// 	'0,0,128',
-			// 	'75,0,130',
-			// 	'255,0,255',
-			// 	'245,222,179',
-			// 	'139,69,19',
-			// 	'112,128,144',
-			// 	'192,192,192'
-			// ];
-			// for(i=0 ; i<data.datasets.length ; i++){
-			// 	var obj = data.datasets[i];
-			// 	obj.fillColor = "rgba("+tColors[i]+",0.5)";
-			// 	obj.strokeColor = "rgba("+tColors[i]+",0.8)";
-			// 	obj.highlightFill = "rgba("+tColors[i]+",0.75)";
-			// 	obj.highlightStroke = "rgba("+tColors[i]+",1)";
-
-			// 	// obj.fillColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.5)";
-			// 	// obj.strokeColor = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.8)";
-			// 	// obj.highlightFill = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",0.75)";
-			// 	// obj.highlightStroke = "rgba("+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+","+(nColor-i*nColorGap)+",1)";
-			// }
-			// ctx.canvas.width  = document.getElementById("chartGraph").clientWidth;
-			// var myBarChart = new Chart(ctx).Bar(data, options);
-			// legend(document.getElementById("chartLegend"), data);
 		}
 		function drawChart2() {
 			var graphData = [
@@ -151,18 +98,7 @@
 		</div>
 		<div id="contentWrapper">
 			<!--SIDE BAR CONTENT-->
-			<div id="sidebar">
-				<div id="container2">
-					<div class="blocklinks">
-						<?php include("login3/views/sideBarProfile.php"); ?>
-						<h3>Legfrisseb információk &rsaquo;</h3>
-						<a href="http://bor.tvarga.hu/borkostolas.apk" class="link" target="_blank">Android alkalmazás</a>
-						<h3>Linkek &rsaquo;</h3>
-						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
-						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
-					</div>
-				</div>
-			</div>
+            <?php include('sidebar.php'); ?>
 			<!--MAIN CONTENT-->
 			<div id="content">
 
@@ -336,12 +272,7 @@
 		
 
 		<!--THE FOOTER-->
-		<div id="footer">
-			<div id="footerText">
-				<p>Készítette - 2014 Varga Tamás</p>
-				&nbsp;
-			</div>
-		</div>
+        <?php include('footer.php'); ?>
 	</div>
 </body>
 </html>

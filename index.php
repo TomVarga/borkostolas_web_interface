@@ -31,18 +31,7 @@
 
 		<div id="contentWrapper">
 			<!--SIDE BAR CONTENT-->
-			<div id="sidebar">
-				<div id="container2">
-					<div class="blocklinks">
-						<?php include("login3/views/sideBarProfile.php"); ?>
-						<h3>Legfrisseb információk &rsaquo;</h3>
-						<a href="http://bor.tvarga.hu/borkostolas.apk" class="link" target="_blank">Android alkalmazás</a>
-						<h3>Linkek &rsaquo;</h3>
-						<a href="http://www.inf.u-szeged.hu/~london/" class="link">London András honlapja</a>
-						<a href="http://www.inf.u-szeged.hu/~csendes/" class="link">Csendes Tibor honlapja</a>
-					</div>
-				</div>
-			</div>
+            <?php include('sidebar.php'); ?>
 
 			<!--MAIN CONTENT-->
 			<div id="content">
@@ -114,12 +103,7 @@
 		</div>
 
 		<!--THE FOOTER-->
-		<div id="footer">
-			<div id="footerText">
-				<p>Készítette - 2014 Varga Tamás</p>
-				&nbsp;
-			</div>
-		</div>
+        <?php include('footer.php'); ?>
 	</div>
 </body>
 </html>
