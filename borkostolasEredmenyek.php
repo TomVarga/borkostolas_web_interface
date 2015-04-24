@@ -10,6 +10,7 @@
 	<!--Load the AJAX API-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/topNavActivator.js"></script>
 	<script type="text/javascript">
 		$(function () {
 			$('.topScrollingBlockWrapper').on('scroll', function () {
@@ -79,21 +80,7 @@
 <body>
 <div id="wrapper">
 	<!--HEADER/LOGO-->
-	<div id="header">
-		<div id="logo">
-			<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
-			<h1>Borkóstolás</h1>
-		</div>
-
-		<!--TAB NAVIGATION-->
-		<div id="topnav">
-			<a href="index.php">Főoldal</a>
-			<a href="borkostolasEredmenyek.php" class="active">Eredmények</a>
-			<a href="demo.php">Demó</a>
-			<a href="modszerek.php">Módszerek</a>
-			<a href="kapcsolat.php">Kapcsolat</a>
-		</div>
-	</div>
+	<?php include('header.php'); ?>
 	<div id="contentWrapper">
 		<!--SIDE BAR CONTENT-->
 		<?php include('sidebar.php'); ?>

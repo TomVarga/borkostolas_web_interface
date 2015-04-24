@@ -7,27 +7,14 @@
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/topNavActivator.js"></script>
 </head>
-
 
 <body>
 <div id="wrapper">
 	<!--HEADER/LOGO-->
-	<div id="header">
-		<div id="logo">
-			<img src="resources/images/header_image.jpg" alt="Fejléc kép" class="headerImage" />
-			<h1>Borkóstolás</h1>
-		</div>
-
-		<!--TAB NAVIGATION-->
-		<div id="topnav">
-			<a href="index.php" class="active">Főoldal</a>
-			<a href="borkostolasEredmenyek.php">Eredmények</a>
-			<a href="demo.php">Demó</a>
-			<a href="modszerek.php">Módszerek</a>
-			<a href="kapcsolat.php">Kapcsolat</a>
-		</div>
-	</div>
+	<?php include('header.php'); ?>
 
 	<div id="contentWrapper">
 		<!--SIDE BAR CONTENT-->
