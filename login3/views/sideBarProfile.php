@@ -9,7 +9,9 @@
 	// for demonstration purposes, we simply show the "you are logged in" view.
 		echo '<h3>' . $_SESSION['user_name'] . '&rsaquo;</h3>';
 		include("login3/views/logged_in.php");
-
+		if ($login->getPermission() > 0){
+			include("login3/views/logged_in_as_admin.php");
+		};
 	} else {
 	// the user is not logged in. you can do whatever you want here.
 	// for demonstration purposes, we simply show the "you are not logged in" view.

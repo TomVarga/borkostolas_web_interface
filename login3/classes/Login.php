@@ -29,6 +29,10 @@ class Login
      * @var string $user_email The user's mail
      */
     private $user_email = "";
+	/**
+	 * @var int $user_permission The user's permissions
+	 */
+	private $user_permission = 0;
     /**
      * @var boolean $user_is_logged_in The user's login status
      */
@@ -206,6 +210,7 @@ class Login
     {
         $this->user_name = $_SESSION['user_name'];
         $this->user_email = $_SESSION['user_email'];
+	    $this->user_permission = $_SESSION['user_permission'];
 
         // set logged in status to true, because we just checked for this:
         // !empty($_SESSION['user_name']) && ($_SESSION['user_logged_in'] == 1)
@@ -227,7 +232,7 @@ class Login
                 // cookie looks good, try to select corresponding user
                 if ($this->databaseConnection()) {
                     // get real token from database (and all other data)
-                    $sth = $this->db_connection->prepare("SELECT user_id, user_name, user_email FROM users WHERE user_id = :user_id
+                    $sth = $this->db_connection->prepare("SELECT user_id, user_name, user_email, user_permission FROM users WHERE user_id = :user_id
                                                       AND user_rememberme_token = :user_rememberme_token AND user_rememberme_token IS NOT NULL");
                     $sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
                     $sth->bindValue(':user_rememberme_token', $token, PDO::PARAM_STR);
@@ -240,12 +245,14 @@ class Login
                         $_SESSION['user_id'] = $result_row->user_id;
                         $_SESSION['user_name'] = $result_row->user_name;
                         $_SESSION['user_email'] = $result_row->user_email;
+	                    $_SESSION['user_permission'] = $result_row->user_permission;
                         $_SESSION['user_logged_in'] = 1;
 
                         // declare user id, set the login status to true
                         $this->user_id = $result_row->user_id;
                         $this->user_name = $result_row->user_name;
                         $this->user_email = $result_row->user_email;
+	                    $this->user_permission = $result_row->user_permission;
                         $this->user_is_logged_in = true;
 
                         // Cookie token usable only once
@@ -316,12 +323,14 @@ class Login
                 $_SESSION['user_id'] = $result_row->user_id;
                 $_SESSION['user_name'] = $result_row->user_name;
                 $_SESSION['user_email'] = $result_row->user_email;
+	            $_SESSION['user_permission'] = $result_row->user_permission;
                 $_SESSION['user_logged_in'] = 1;
 
                 // declare user id, set the login status to true
                 $this->user_id = $result_row->user_id;
                 $this->user_name = $result_row->user_name;
                 $this->user_email = $result_row->user_email;
+	            $this->user_permission = $result_row->user_permission;
                 $this->user_is_logged_in = true;
 
                 // reset the failed login counter for that user
@@ -809,4 +818,13 @@ class Login
         // the image url like above but with an additional <img src .. /> around
         $this->user_gravatar_image_tag = $url;
     }
+
+	/**
+	 * Simply return the user's permission
+	 * @return int user's permission
+	 */
+	public function getPermission()
+	{
+		return $this->user_permission;
+	}
 }
