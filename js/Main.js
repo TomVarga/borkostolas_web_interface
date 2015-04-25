@@ -1,5 +1,4 @@
 var algoritmus;
-var nMaxSize = 10000;
 var algoritmusok = [
     ["hits", "CoHITS"],
     ["hamming", "Hamming"],
@@ -55,7 +54,6 @@ function clearResults(){
         textResult.removeChild(textResult.lastChild);
     }
 }
-
 
 function addMatrix(){
     var Kostolok = document.getElementById("kostolok");
@@ -469,7 +467,7 @@ function getMyScores(){
         }
     }
     nBorok = maxId;
-
+	//alert(JSON.stringify(map));
     var response;
     var xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function(){
@@ -479,7 +477,7 @@ function getMyScores(){
             return;
         }
     }
-    xmlhttp.open("POST","../phpHelpers/getWiredInScores.php",false);
+    xmlhttp.open("POST","../phpHelpers/getTastersScores.php",false);
     xmlhttp.send();
 
     var nTastedBorokBySelf = 0;
@@ -527,7 +525,7 @@ function onSelectChange(){
 }
 
 
-function submitMyScores(user_name){
+function submitMyScores(user_name, nMaxSize){
     var nKostolok = 7;
     var nBorok = 0;
     var tempArray = [];
@@ -583,7 +581,7 @@ function submitMyScores(user_name){
             return;
         }
     }
-    xmlhttp.open("POST","../phpHelpers/getWiredInScores.php",false);
+    xmlhttp.open("POST","../phpHelpers/getTastersScores.php",false);
     xmlhttp.send();
 
     var nTastedBorokBySelf = 0;
