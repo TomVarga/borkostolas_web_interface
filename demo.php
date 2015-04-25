@@ -80,11 +80,16 @@
                         </thead>
                         <tbody>";
 				$wineCount = getWineCount()+1;
+				$emptyWines = array();
 				for($i=1; $i < $wineCount; $i++){
 					$sth = $db_connection->prepare("SELECT * FROM wines where wine_id = $i");
 					$sth->execute();
 					$wine = $sth->fetch(PDO::FETCH_ASSOC);
-					echo "<tr><td>".$wine["wine_id"]."</td>"."<td>".$wine["wine_name"]."</td>"."<td>".$wine["wine_winery"]."</td>"."<td>".$wine["wine_location"]."</td>"."<td>".$wine["wine_year"]."</td>"."<td>".$wine["wine_composition"]."</td>"."<td>".$wine["wine_price"]."</td></tr>";
+					if (!empty($wine['wine_name'])) {
+						echo "<tr><td>" . $wine["wine_id"] . "</td>" . "<td>" . $wine["wine_name"] . "</td>" . "<td>" . $wine["wine_winery"] . "</td>" . "<td>" . $wine["wine_location"] . "</td>" . "<td>" . $wine["wine_year"] . "</td>" . "<td>" . $wine["wine_composition"] . "</td>" . "<td>" . $wine["wine_price"] . "</td></tr>";
+					}else{
+						$emptyWines[$i] = true;
+					}
 				}
 				echo "
                         </tbody>
@@ -114,7 +119,9 @@
 							$nScore = $tScore["score"]+0;
 						}
 					}
-					echo "<tr><td>$i</td><td><input id='wine_score_$i' type='text' name='wine_score_$i' class='columnInput' value=$nScore></td></tr>";
+					if (!$emptyWines[$i]){
+						echo "<tr><td>$i</td><td><input id='wine_score_$i' type='text' name='wine_score_$i' class='columnInput' value=$nScore></td></tr>";
+					}
 				}
 
 				$db_connection = null;
@@ -124,7 +131,7 @@
                 </div>
             </div>";
 				$user_name = $_SESSION['user_name'];
-				echo "<p><a href='#' id='submit' onclick='submitMyScores(\"$user_name\")'>Elküld</a><br /></p>";
+				echo "<p><a href='#' id='submit' onclick='submitMyScores(\"$user_name\", \"$wineCount\")'>Elküld</a><br /></p>";
 			}else{
 				echo "<h2>A demo használatához be kell jelentkezni!</h2>";
 			}

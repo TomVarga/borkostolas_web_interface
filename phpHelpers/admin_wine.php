@@ -23,16 +23,27 @@ echo "<div class='topScrollingBlockWrapperForInupt'>
 					$sth = $db_connection->prepare("SELECT * FROM wines where wine_id = $i");
 					$sth->execute();
 					$wine = $sth->fetch(PDO::FETCH_ASSOC);
-					echo "<tr>".
-						"<td>".$wine["wine_id"]."</td>".
-						"<td><input id='wine_name_$i' type='text' name='wine_name_$i' class='columnInputAdmin' value='$wine[wine_name]'></td>".
-						"<td><input id='wine_winery_$i' type='text' name='wine_winery_$i' class='columnInputAdmin' value='$wine[wine_winery]'></td>".
-						"<td><input id='wine_location_$i' type='text' name='wine_location_$i' class='columnInputAdmin' value='$wine[wine_location]'></td>".
-						"<td><input id='wine_year_$i' type='text' name='wine_year_$i' class='columnInputAdmin' value='$wine[wine_year]'></td>".
-						"<td><input id='wine_composition_$i' type='text' name='wine_composition_$i' class='columnInputAdmin' value='$wine[wine_composition]'></td>".
-						"<td><input id='wine_price_$i' type='text' name='wine_price_$i' class='columnInputAdmin' value='$wine[wine_price]'></td>".
-					"</tr>";
+					if (!empty($wine['wine_name'])){
+						echo "<tr>" .
+							"<td>" . $wine["wine_id"] . "</td>" .
+							"<td><input id='wine_name_$i' type='text' name='wine_name_$i' class='columnInputAdmin' value='$wine[wine_name]'></td>" .
+							"<td><input id='wine_winery_$i' type='text' name='wine_winery_$i' class='columnInputAdmin' value='$wine[wine_winery]'></td>" .
+							"<td><input id='wine_location_$i' type='text' name='wine_location_$i' class='columnInputAdmin' value='$wine[wine_location]'></td>" .
+							"<td><input id='wine_year_$i' type='text' name='wine_year_$i' class='columnInputAdmin' value='$wine[wine_year]'></td>" .
+							"<td><input id='wine_composition_$i' type='text' name='wine_composition_$i' class='columnInputAdmin' value='$wine[wine_composition]'></td>" .
+							"<td><input id='wine_price_$i' type='text' name='wine_price_$i' class='columnInputAdmin' value='$wine[wine_price]'></td>" .
+							"</tr>";
+					}
 				}
+				echo "<tr>".
+					"<td>Új</td>".
+					"<td><input id='wine_name_0' type='text' name='wine_name_0' class='columnInputAdmin'></td>".
+					"<td><input id='wine_winery_0' type='text' name='wine_winery_0' class='columnInputAdmin'></td>".
+					"<td><input id='wine_location_0' type='text' name='wine_location_0' class='columnInputAdmin'></td>".
+					"<td><input id='wine_year_0' type='text' name='wine_year_0' class='columnInputAdmin'></td>".
+					"<td><input id='wine_composition_0' type='text' name='wine_composition_0' class='columnInputAdmin'></td>".
+					"<td><input id='wine_price_0' type='text' name='wine_price_0' class='columnInputAdmin'></td>".
+					"</tr>";
 				echo "
                         </tbody>
                     </table>
@@ -49,23 +60,20 @@ echo "<div class='topScrollingBlockWrapperForInupt'>
 
 				$user_id = $_SESSION['user_id'];
 
-				for($i=1; $i < $wineCount; $i++){
-					$sth = $db_connection->prepare("SELECT score FROM scores where wine_id = $i AND user_id = $user_id");
+				for($i=1; $i < $wineCount; $i++) {
+					$sth = $db_connection->prepare("SELECT * FROM wines where wine_id = $i");
 					$sth->execute();
-					$tScore = $sth->fetch();
-					$nScore = "";
-					if (count($tScore)>1){
-						if ($tScore["score"] == null){
-							$nScore = "";
-						}else{
-							$nScore = $tScore["score"]+0;
-						}
+					$wine = $sth->fetch(PDO::FETCH_ASSOC);
+					if (!empty($wine['wine_name'])) {
+						echo "<tr>" .
+							"<td><a href='#' id='save' onclick='editWine(\"$i\")'>Mentés</a></td>" .
+							"<td><a href='#' id='delete' onclick='deleteWine(\"$i\")'>Törlés</a></td>" .
+							"</tr>";
 					}
-					echo "<tr>".
-						"<td><a href='#' id='save' onclick='editWine(\"$i\")'>Mentés</a></td>".
-						"<td><a href='#' id='delete' onclick='deleteWine(\"$i\")'>Törlés</a></td>".
-						"</tr>";
 				}
+					echo "<tr>" .
+						"<td colspan=2><a href='#' id='add' onclick='addWine()'>Hozzáad</a></td>" .
+						"</tr>";
 
 				$db_connection = null;
 				echo "
