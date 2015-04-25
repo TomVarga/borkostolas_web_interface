@@ -12,19 +12,7 @@ var algoritmusok = [
 function getDecPrec(num) {
 	return (num.split('.')[1] || []).length;
 }
-function isNumber(input){
-	var numbers = /^[0-9]+$/;
-	if(input.value.match(numbers)){
-		return true;
-	}
-	return false;
-}
-function isEmpty(input){
-	if (input == null || input == "") {
-		return true;
-	}
-	return false;
-}
+
 
 function getAlgoritmusName(algoritmus){
 	for (i = 0; i< algoritmusok.length; i++){
@@ -54,96 +42,6 @@ function clearResults(){
 	while (textResult.hasChildNodes()) {
 		textResult.removeChild(textResult.lastChild);
 	}
-}
-
-
-function addMatrix(){
-	var Kostolok = document.getElementById("kostolok");
-	var nKostolok = Kostolok.value
-	var Borok = document.getElementById("borok");
-	var nBorok = Borok.value
-
-	if (!isNumber(Kostolok)){
-		alert('A ' + Kostolok.name + ' mezőbe 0 nál nagyobb számot kell írni! (numerikus formátumban)');
-		return;
-	}else if (!isNumber(Borok)){
-		alert('A ' + Borok.name + ' mezőbe számot kell írni!');
-		return;
-	}
-
-	nKostolok = parseInt(nKostolok);
-	nBorok = parseInt(nBorok);
-	if (nKostolok < 1){
-		alert('A ' + Kostolok.name + ' mezőbe 0 nál nagyobb számot kell írni! (numerikus formátumban)')
-		return;
-	}else if (nBorok < 1){
-		alert('A ' + Borok.name + ' mezőbe 0 nál nagyobb számot kell írni! (numerikus formátumban)')
-		return;
-	}
-
-	var matrixInputCheck = document.getElementById("0:0");
-	if (matrixInputCheck){
-		if (!confirm('Az esetlegesen jelenleg kitöltött mezők törlésre fognak kerülnek!\n\nBiztosan újra akarja generálni a beviteli mezőket?')) {
-			return;
-		}
-	}
-
-	clearResults();
-
-	var matrix = document.getElementById("inputMatrix");
-
-	while (matrix.hasChildNodes()) {
-		matrix.removeChild(matrix.lastChild);
-	}
-	var tbl = document.createElement('table');
-	var thead = document.createElement('thead');
-	var trHead = document.createElement('tr');
-	for (i=0;i<nKostolok+1;i++){
-		var th = document.createElement("th");
-		if (i>0){
-			th.appendChild(document.createTextNode(i + ". Kóstoló"));
-		}
-		trHead.appendChild(th);
-	}
-	thead.appendChild(trHead);
-	tbl.appendChild(thead);
-	var tbdy=document.createElement('tbody');
-	for (i=0;i<nBorok+1;i++){
-		var tr=document.createElement('tr');
-		var td0=document.createElement('td');;
-		if (i==0){
-			td0.appendChild(document.createTextNode("Kóstoló neve"));
-		}else{
-			td0.appendChild(document.createTextNode(i + ". Bor"));
-		}
-		tr.appendChild(td0);
-		for (j=0;j<nKostolok;j++){
-			var td=document.createElement('td');
-			var input = document.createElement("input");
-			input.type = "text";
-			input.name = i + ":" + j;
-			input.className = "matrixInput";
-			input.id = i + ":" + j;
-			td.appendChild(input);
-			tr.appendChild(td)
-		}
-
-		tbdy.appendChild(tr);
-	}
-	tbl.appendChild(tbdy);
-	matrix.appendChild(tbl);
-	var p = document.createElement('p');
-	var submit = document.createElement('a');
-	submit.href = "#";
-	submit.id = "submitMatrix";
-	submit.onclick = getMatrixData;
-	submit.appendChild(document.createTextNode("Elküld"));
-	p.appendChild(submit);
-	var submitMatrix = document.getElementById("submitMatrix");
-	while (submitMatrix.hasChildNodes()) {
-		submitMatrix.removeChild(submitMatrix.lastChild);
-	}
-	submitMatrix.appendChild(p);
 }
 
 function drawChart(graphData, graphData2) {

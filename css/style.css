@@ -205,6 +205,13 @@ a {
 	font-size:9px;
 }
 
+.columnInputAdmin{
+	height: 9px;
+	font-family: arial, monospace;
+	color: black;
+	font-size:9px;
+}
+
 #scrollingTable {
 	overflow: auto;
 }
@@ -309,6 +316,16 @@ table tr td, th{
 	overflow-x: auto;
 }
 
+.leftTableContainerForInputAdmin {
+	width: 80%;
+	float:left;
+	overflow-x: auto;
+}
+
+.leftTableContainerForInputAdmin tr td{
+	padding: 1px;
+}
+
 .rightTableContainerForInput {
 	width: 15%;
 	float: left;
@@ -317,6 +334,19 @@ table tr td, th{
 
 .rightTableWithInput tr td{
 	padding: 1px;
+}
+
+.rightTableWithInputAdmin a{
+	color: #383838;
+	text-decoration: none;
+	border-bottom: 1px gray dotted;
+	font-family: arial, monospace;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.rightTableWithInputAdmin a:visited {
+	color: #4A4A4A;
 }
 
 /* side bar */

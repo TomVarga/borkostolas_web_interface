@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="http://numericjs.com/lib/numeric-1.2.6.min.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/validatorHelpers.js"></script>
 	<script type="text/javascript" src="/js/Main.js"></script>
 	<script type="text/javascript" src="/js/topNavActivator.js"></script>
 	<script type='text/javascript'>

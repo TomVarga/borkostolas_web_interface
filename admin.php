@@ -7,8 +7,23 @@
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/validatorHelpers.js"></script>
+	<script type="text/javascript" src="/js/admin.js"></script>
+	<script type='text/javascript'>
+		$(function () {
+			$('.topScrollingBlockWrapperForInupt').on('scroll', function () {
+				$('.leftTableContainerForInputAdmin').scrollLeft($('.topScrollingBlockWrapperForInupt').scrollLeft());
+			});
+			$('.leftTableContainerForInputAdmin').on('scroll', function () {
+				$('.topScrollingBlockWrapperForInupt').scrollLeft($('.leftTableContainerForInputAdmin').scrollLeft());
+			});
+		});
+		$(window).on('load', function () {
+			$('.topScroll').width($('.leftTableForInput').width());
+		});
+	</script>
 </head>
-
 
 <body>
 <div id="wrapper">
@@ -24,7 +39,8 @@
 			<?php
 			if ($login->getPermission() > 0){
 				echo "<h2>Adminisztráció</h2>";
-				include('admin_wine.php');
+				include_once('services/dbUtils.php');
+				include('phpHelpers/admin_wine.php');
 			}else{
 				echo "<h2>Az admin felület használatához adminként kell bejelentkezni!</h2>";
 			};
