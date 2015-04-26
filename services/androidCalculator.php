@@ -26,8 +26,6 @@
 		<option value='cosine'>Koszinusz</option>
 		<option value='precedence'>Precedencia</option>
 		<option value='adjacency'>Összefüggőségi</option>
-		<option value='positional'>Pozíció szerint</option>
-		<!--<option value='sajat'>Saját</option>-->
 	</select>
 	<div id="user_id" hidden="true">
 		<?php

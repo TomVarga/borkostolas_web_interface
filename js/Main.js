@@ -5,7 +5,6 @@ var algoritmusok = [
     ["cosine", "Koszinusz"],
     ["precedence", "Precedencia"],
     ["adjacency", "Összefüggőségi"],
-    ["positional", "Pozíció szerint"]
 ];
 
 function getDecPrec(num) {

@@ -57,7 +57,6 @@
                     <option value='cosine'>Koszinusz</option>
                     <option value='precedence'>Precedencia</option>
                     <option value='adjacency'>Összefüggőségi</option>
-                    <option value='positional'>Pozíció szerint</option>
                 </select>
                 <br />
             </p>
