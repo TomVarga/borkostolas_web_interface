@@ -7,7 +7,7 @@
 	<title>Borkóstolás</title>
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="/js/topNavActivator.js"></script>
 </head>
 

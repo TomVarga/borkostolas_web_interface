@@ -8,8 +8,8 @@
 	<meta http-equiv="content-type" content="application/xhtml; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen, print, projection" />
 	<!--Load the AJAX API-->
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/jsapi"></script>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="/js/topNavActivator.js"></script>
 	<script type="text/javascript">
 		$(function () {
