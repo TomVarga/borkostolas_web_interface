@@ -18,6 +18,8 @@ define("DB_NAME", "1637366_borkost");
 define("DB_USER", "1637366_borkost");
 define("DB_PASS", "tK%H66eDPNjDqU#!vwb^");
 
+$domain = "bor.tvarga.hu";
+
 /**
  * Configuration for: Cookies
  * Please note: The COOKIE_DOMAIN needs the domain where your app is,
@@ -34,7 +36,7 @@ define("DB_PASS", "tK%H66eDPNjDqU#!vwb^");
  * COOKIE_SECRET_KEY: Put a random value here to make your app more secure. When changed, all cookies are reset.
  */
 define("COOKIE_RUNTIME", 1209600);
-define("COOKIE_DOMAIN", ".bor.tvarga.hu");
+define("COOKIE_DOMAIN", ".".$domain);
 define("COOKIE_SECRET_KEY", "1gp@TMPS{+$78sfpMJFe-92s");
 
 /**
@@ -73,20 +75,20 @@ define("EMAIL_SMTP_ENCRYPTION", "ssl");
  * Configuration for: password reset email data
  * Set the absolute URL to password_reset.php, necessary for email password reset links
  */
-define("EMAIL_PASSWORDRESET_URL", "http://bor.tvarga.hu/passwordReset.php");
+define("EMAIL_PASSWORDRESET_URL", "http://".$domain."/passwordReset.php");
 define("EMAIL_PASSWORDRESET_FROM", "no-reply@tvarga.hu");
 define("EMAIL_PASSWORDRESET_FROM_NAME", "Borkóstolás");
-define("EMAIL_PASSWORDRESET_SUBJECT", "Jelszó visszaállítása bor.tvarga.hu - borkóstolás");
+define("EMAIL_PASSWORDRESET_SUBJECT", "Jelszó visszaállítása ".$domain." - borkóstolás");
 define("EMAIL_PASSWORDRESET_CONTENT", "Kérlek kattints erre a linkre ahhoz hogy visszaállítsd a jelszavad: ");
 
 /**
  * Configuration for: verification email data
  * Set the absolute URL to register.php, necessary for email verification links
  */
-define("EMAIL_VERIFICATION_URL", "http://bor.tvarga.hu/register.php");
+define("EMAIL_VERIFICATION_URL", "http://".$domain."/register.php");
 define("EMAIL_VERIFICATION_FROM", "no-reply@tvarga.hu");
 define("EMAIL_VERIFICATION_FROM_NAME", "Borkóstolás");
-define("EMAIL_VERIFICATION_SUBJECT", "Fiók aktiválás bor.tvarga.hu - Borkóstolás");
+define("EMAIL_VERIFICATION_SUBJECT", "Fiók aktiválás ".$domain." - Borkóstolás");
 define("EMAIL_VERIFICATION_CONTENT", "Kérlek kattints erre a linkre ahhoz hogy aktiváld a fiókod:");
 
 /**
