@@ -157,12 +157,10 @@ function drawChart(graphData, graphData2) {
             type: "string",
             role: "annotation" }
     ]);
-    var options = {
-    };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.BarChart(document.getElementById("graph"));
-    chart.draw(view, options);
+    chart.draw(view);
 
     // var chart = new google.visualization.BarChart(document.getElementById('graph'));
     // chart.draw(data, options);
@@ -202,12 +200,10 @@ function drawChart2(graphData){
             type: "string",
             role: "annotation" }
     ]);
-    var options = {
-    };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.BarChart(document.getElementById("graph2"));
-    chart.draw(view, options);
+    chart.draw(view);
 
     // var chart = new google.visualization.BarChart(document.getElementById('graph'));
     // chart.draw(data, options);
@@ -323,7 +319,7 @@ function getData(returnArray, returnArray2){
                 var data = JSON.parse(xmlhttp.responseText);
                 // let the users client calculate eigenvalues and vectors.
                 var B = numeric.eig(numeric.transpose(data.matrix));
-
+				//alert(JSON.stringify(B));
                 var xmlhttpEIG=new XMLHttpRequest();
                 xmlhttpEIG.onreadystatechange=function(){
                     if (xmlhttpEIG.readyState==4 && xmlhttpEIG.status==200){
@@ -333,13 +329,13 @@ function getData(returnArray, returnArray2){
                         var tCorrelation = data.tCorrelation;
                         var tSumOfDiff = data.tSumOfDiff;
 
-                        var bZeroCollerlationFound = false;
-                        for (var i = 0; i < tCorrelation.length; i++) {
-                            if (tCorrelation[i] == 0){
-                                bZeroCollerlationFound = true;
-                                break;
-                            }
-                        };
+                        //var bZeroCollerlationFound = false;
+                        //for (var i = 0; i < tCorrelation.length; i++) {
+                        //    if (tCorrelation[i] == 0){
+                        //        bZeroCollerlationFound = true;
+                        //        break;
+                        //    }
+                        //};
                         // norm to hundred
                         var max = Math.max.apply(null, CoHITS);
                         for (var i=0; i < CoHITS.length; i++){

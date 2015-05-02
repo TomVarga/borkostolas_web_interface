@@ -200,6 +200,8 @@ function swapping_sim( $arr_kostol1, $arr_kostol2 ) {
 
 }
 
+// --- Eddíg kapott ez kapott kód credit: tnemeth
+
 function calculateGivenAlgorithm($array){
 	$nKostolok = $array[0]; // number of tasters
 	$nBorok = $array[1]; // number of wines tasted
