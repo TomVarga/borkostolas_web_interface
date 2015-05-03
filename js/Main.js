@@ -248,13 +248,13 @@ function getData2(returnArray, graphData2){
                         var tCorrelation = data.tCorrelation;
                         var tSumOfDiff = data.tSumOfDiff;
 
-                        var bZeroCollerlationFound = false;
-                        for (var i = 0; i < tCorrelation.length; i++) {
-                            if (tCorrelation[i] == 0){
-                                bZeroCollerlationFound = true;
-                                break;
-                            }
-                        };
+                        //var bZeroCollerlationFound = false;
+                        //for (var i = 0; i < tCorrelation.length; i++) {
+                        //    if (tCorrelation[i] == 0){
+                        //        bZeroCollerlationFound = true;
+                        //        break;
+                        //    }
+                        //};
                         // norm to hundred
                         var max = Math.max.apply(null, CoHITS);
                         for (var i=0; i < CoHITS.length; i++){
